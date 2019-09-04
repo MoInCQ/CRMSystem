@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
+import Register from "./views/Register.vue";
 
 import Console from "./components/Console.vue"
 import CustomerConstructAnalysis from "./components/CustomerConstructAnalysis.vue"
@@ -27,6 +28,11 @@ export default new Router({
       path: "/",
       name: "login",
       component: Login
+    },
+    {
+      path: "/Register",
+      name: "Register",
+      component: Register
     },
     {
       path: "/Home",
@@ -105,9 +111,6 @@ export default new Router({
         },
       ]
     },
-    {
-      path: "/about",
-      name: "about",
-    }
+
   ]
 });

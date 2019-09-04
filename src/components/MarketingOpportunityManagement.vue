@@ -110,7 +110,7 @@
       </el-card>
     </el-row>
 
-    <!-- “创建营销”弹出框 -->
+    <!-- “创建/修改营销”弹出框 -->
     <el-dialog ref="create_marketing_opportunity_dialog" :visible.sync="dialogFormVisible">
       <el-form
         :model="creatingMarketingOpportunityForm"

@@ -271,19 +271,19 @@ export default {
         {
           number: "21321414",
           date: "2019-10-18",
-          plan: "与客户面谈",
+          plan: "与客户面谈1",
           situation: "双方交换意见并达成合作"
         },
         {
           number: "21321414",
           date: "2019-10-18",
-          plan: "与客户面谈",
+          plan: "与客户面谈2",
           situation: "双方交换意见并达成合作"
         },
         {
           number: "21321414",
           date: "2019-10-18",
-          plan: "与客户面谈",
+          plan: "与客户面谈3",
           situation: "双方交换意见并达成合作"
         },
         {
@@ -355,6 +355,7 @@ export default {
     // 编辑计划完成情况
     editPlan() {
       this.editPlanDialogVisible = true;
+      console.log(this.currentRow);
     },
 
     // 表格控制当前选中行
@@ -372,7 +373,7 @@ export default {
 
     // 取消选择
     toggleSelection() {
-      this.$refs.marketing_opportunity_info_list.clearSelection();
+      this.$refs.customer_development_plan_info_list.clearSelection();
       console.log("cancel selection");
     },
 

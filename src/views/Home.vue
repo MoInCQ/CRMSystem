@@ -136,6 +136,7 @@ export default {
     // 退出登录
     logOut() {
       console.log("logout success");
+      this.$router.push("/");
     }
   }
 };
