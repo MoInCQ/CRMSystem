@@ -365,10 +365,97 @@
         </el-collapse-item>
 
         <!-- ----------------------------------------------------------------------------------------------------------------------- -->
-        <!-- 交易信息管理 -->
-        <el-collapse-item title="交易信息管理" name="4">
-          <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-          <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+        <!-- 交往信息管理 -->
+        <el-collapse-item title="交往信息管理" name="4">
+          <el-row style="margin-top:15px">
+            <!-- 该公司联系人信息列表 -->
+            <el-card shadow="hover">
+              <!-- 卡片头部 -->
+              <div slot="header" class="clearfix">
+                <el-row style="height:40px">
+                  <el-col :span="16">
+                    <div
+                      style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
+                    >与该公司交往信息列表</div>
+                  </el-col>
+
+                  <el-col :span="2">
+                    <el-button
+                      style="float: right; padding: 3px 0 ; height:40px; text-align:center"
+                      type="text"
+                      icon="el-icon-plus"
+                      @click="addIntercourse()"
+                    >添加交往记录</el-button>
+                  </el-col>
+
+                  <el-col :span="2">
+                    <el-button
+                      style="float: right; padding: 3px 0 ; height:40px; text-align:center"
+                      type="text"
+                      icon="el-icon-refresh"
+                      @click="refreshIntercourseList()"
+                    >刷新列表</el-button>
+                  </el-col>
+
+                  <el-col :span="2">
+                    <el-button
+                      style="float: right; padding: 3px 0 ; height:40px; text-align:center"
+                      type="text"
+                      icon="el-icon-delete"
+                      @click="deleteIntercourseInBatches()"
+                    >批量删除</el-button>
+                  </el-col>
+
+                  <el-col :span="2">
+                    <el-button
+                      style="float: right; padding: 3px 0 ; height:40px; text-align:center"
+                      type="text"
+                      icon="el-icon-close"
+                      @click="toggleIntercourseSelection()"
+                    >取消选择</el-button>
+                  </el-col>
+                </el-row>
+              </div>
+
+              <!-- 列表 -->
+              <el-table
+                ref="Intercourse_List"
+                :data="intercourseListData"
+                highlight-current-row
+                stripe
+                border
+                @current-change="handleCurrentChange"
+                style="width: 100%"
+              >
+                <el-table-column fixed="left" type="selection" width="55"></el-table-column>
+
+                <el-table-column type="index" label="序号" align="center"></el-table-column>
+
+                <el-table-column property="number" label="编号" align="center"></el-table-column>
+
+                <el-table-column property="date" label="时间" align="center"></el-table-column>
+
+                <el-table-column property="location" label="地点" align="center"></el-table-column>
+
+                <el-table-column property="digest" label="概要" align="center"></el-table-column>
+
+                <el-table-column property="detail" label="详细信息" align="center"></el-table-column>
+
+                <el-table-column property="remark" label="备注" align="center"></el-table-column>
+
+                <el-table-column label="修改" align="center">
+                  <template>
+                    <el-button
+                      @click="editIntercourseInfo()"
+                      icon="el-icon-edit"
+                      circle
+                      size="small"
+                    ></el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-card>
+          </el-row>
         </el-collapse-item>
       </el-collapse>
     </el-row>
@@ -648,6 +735,55 @@
         <el-table-column property="price" label="金额（元）" align="center"></el-table-column>
       </el-table>
     </el-dialog>
+
+    <!-- “添加/修改交易信息记录”弹出框 -->
+    <el-dialog ref="create_intercourse_dialog" :visible.sync="createIntercourseDialogVisible">
+      <el-form
+        :model="createIntercourseFormData"
+        ref="createIntercourseFormData"
+        label-width="100px"
+      >
+        <el-form-item label="时间" prop="date">
+          <el-date-picker
+            type="date"
+            placeholder="选择日期"
+            v-model="createIntercourseFormData.date"
+            style="width: 100%;"
+          ></el-date-picker>
+        </el-form-item>
+
+        <el-form-item label="地点" prop="location">
+          <el-input v-model="createIntercourseFormData.location"></el-input>
+        </el-form-item>
+
+        <el-form-item label="概要" prop="digest">
+          <el-input v-model="createIntercourseFormData.digest"></el-input>
+        </el-form-item>
+
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="createIntercourseFormData.remark"></el-input>
+        </el-form-item>
+
+        <el-form-item label="详情" prop="details">
+          <el-input type="textarea" v-model="createIntercourseFormData.details"></el-input>
+        </el-form-item>
+
+        <!-- 提交/重置表单按钮 -->
+        <el-form-item>
+          <el-row>
+            <el-col :span="4" :offset="15">
+              <el-button
+                type="primary"
+                @click="submitCreateIntercourseForm('createIntercourseFormData')"
+              >确定提交</el-button>
+            </el-col>
+            <el-col :span="4" :offset="1">
+              <el-button @click="resetreateIntercourseForm('createIntercourseFormData')">重置表单</el-button>
+            </el-col>
+          </el-row>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -824,7 +960,64 @@ export default {
           unitPrice: 30,
           price: 600
         }
-      ]
+      ],
+
+      // 交往信息管理相关----------------------------------------------------------------
+      intercourseListData: [
+        {
+          number: "21432235",
+          date: "2019-8-2",
+          location: "海南省三亚市",
+          digest: "签订意向协议",
+          detail: "...",
+          remark: "主办单位：海南通讯协会"
+        },
+        {
+          number: "21432235",
+          date: "2019-8-2",
+          location: "海南省三亚市",
+          digest: "签订意向协议",
+          detail: "...",
+          remark: "主办单位：海南通讯协会"
+        },
+        {
+          number: "21432235",
+          date: "2019-8-2",
+          location: "海南省三亚市",
+          digest: "签订意向协议",
+          detail: "...",
+          remark: "主办单位：海南通讯协会"
+        },
+        {
+          number: "21432235",
+          date: "2019-8-2",
+          location: "海南省三亚市",
+          digest: "签订意向协议",
+          detail: "...",
+          remark: "主办单位：海南通讯协会"
+        },
+        {
+          number: "21432235",
+          date: "2019-8-2",
+          location: "海南省三亚市",
+          digest: "签订意向协议",
+          detail: "...",
+          remark: "主办单位：海南通讯协会"
+        }
+      ],
+      currentRowOfIntercourse: "",
+
+      // “添加/修改交往信息”弹出框显示控制
+      createIntercourseDialogVisible: false,
+
+      // “添加/修改交往信息”弹出框内的表单
+      createIntercourseFormData: {
+        date: "",
+        location: "",
+        digest: "",
+        remark: "",
+        details: ""
+      }
     };
   },
 
@@ -868,6 +1061,7 @@ export default {
     handleCurrentChange(val) {
       this.currentRowOfContacts = val;
       this.currentRowOfHistoryOrder = val;
+      this.currentRowOfIntercourse = val;
     },
 
     // 批量删除联系人
@@ -893,10 +1087,47 @@ export default {
       this.$refs[formName].resetFields();
     },
 
-    // 历史订单管理-----------------------------------------------------------------------------------
+    // 历史订单管理---------------------------------------------------------------------------------------------
     viewHistoryOrderDetails() {
       console.log(this.currentRowOfHistoryOrder);
       this.historyOrderDialogVisible = true;
+    },
+
+    // 交往信息管理-------------------------------------------------------------------------
+    // 添加交往信息
+    addIntercourse() {
+      this.$refs.create_intercourse_dialog.title = "创建交往信息记录";
+      this.createIntercourseDialogVisible = true;
+    },
+
+    // 修改交往信息
+    editIntercourseInfo() {
+      console.log(this.currentRowOfContacts);
+      this.$refs.create_intercourse_dialog.title = "修改交往信息记录";
+      this.createIntercourseDialogVisible = true;
+    },
+
+    // 批量删除交往信息记录
+    deleteIntercourseInBatches() {},
+
+    // 刷新交往信息记录列表
+    refreshIntercourseList() {
+      console.log("refresh");
+    },
+
+    // 取消选择交往信息记录
+    toggleIntercourseSelection() {
+      this.$refs.Intercourse_List.clearSelection();
+      console.log("cancel selection");
+    },
+
+    // “新建/修改联系人”对话框---------------------------------------------------
+    submitCreateIntercourseForm(formName) {
+      this.$refs[formName].resetFields();
+      this.createIntercourseDialogVisible = false;
+    },
+    resetreateIntercourseForm(formName) {
+      this.$refs[formName].resetFields();
     }
   }
 };
