@@ -1,3 +1,19 @@
 <template>
-    <h1>lalala</h1>
+  <h1>
+    11111
+  </h1>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+
+    };
+  },
+
+  methods: {
+
+  }
+};
+</script>

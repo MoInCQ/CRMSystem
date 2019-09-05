@@ -18,7 +18,7 @@
 
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
+      <el-aside class="el-aside" width="16%">
         <!-- 基本信息 -->
         <el-row style="height:70px;">
           <!-- 头像 -->
@@ -45,7 +45,7 @@
         </el-row>
 
         <!-- 导航栏 -->
-        <el-menu :default-active="activeIndex" style="marginTop:10px" router>
+        <el-menu :default-active="activeIndex" style="marginTop:10px;" router>
           <!-- 控制台 -->
           <el-menu-item index="/Home/Console">
             <i class="el-icon-help"></i>
@@ -120,6 +120,15 @@
   </el-container>
 </template>
 
+<style scoped>
+.el-aside {
+display: block;
+position: relative;
+overflow-y: scroll;
+
+}
+
+</style>
 
 
 <script>
