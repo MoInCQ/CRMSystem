@@ -90,7 +90,7 @@
               <span>报表统计</span>
             </template>
             <el-menu-item index="/Home/CustomerServeAnalysis">客户服务分析</el-menu-item>
-            <el-menu-item index="/Home/CustomerConstructAnalysis">客户构建分析</el-menu-item>
+            <el-menu-item index="/Home/CustomerConstructAnalysis">客户构成分析</el-menu-item>
             <el-menu-item index="/Home/CustomerContributeAnalysis">客户贡献分析</el-menu-item>
             <el-menu-item index="/Home/CustomerLoseAnalysis">客户流失分析</el-menu-item>
           </el-submenu>
