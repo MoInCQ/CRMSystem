@@ -18,7 +18,7 @@
 
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
+      <el-aside class="el-aside" width="16%">
         <!-- 基本信息 -->
         <el-row style="height:70px;">
           <!-- 头像 -->
@@ -45,7 +45,7 @@
         </el-row>
 
         <!-- 导航栏 -->
-        <el-menu :default-active="activeIndex" style="marginTop:10px" router>
+        <el-menu :default-active="activeIndex" style="marginTop:10px;" router>
           <!-- 控制台 -->
           <el-menu-item index="/Home/Console">
             <i class="el-icon-help"></i>
@@ -90,7 +90,7 @@
               <span>报表统计</span>
             </template>
             <el-menu-item index="/Home/CustomerServeAnalysis">客户服务分析</el-menu-item>
-            <el-menu-item index="/Home/CustomerConstructAnalysis">客户构建分析</el-menu-item>
+            <el-menu-item index="/Home/CustomerConstructAnalysis">客户构成分析</el-menu-item>
             <el-menu-item index="/Home/CustomerContributeAnalysis">客户贡献分析</el-menu-item>
             <el-menu-item index="/Home/CustomerLoseAnalysis">客户流失分析</el-menu-item>
           </el-submenu>
@@ -120,6 +120,15 @@
   </el-container>
 </template>
 
+<style scoped>
+.el-aside {
+display: block;
+position: relative;
+overflow-y: scroll;
+
+}
+
+</style>
 
 
 <script>
