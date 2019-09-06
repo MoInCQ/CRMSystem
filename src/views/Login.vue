@@ -128,7 +128,7 @@ export default {
               )
             )
             .then(res => {
-              console.log("状态码"+res.data.code);
+              console.log("登录状态码"+res.data.code);
               if (res.data.code == 1) {
                 this.$router.push("/Home");
               } else {

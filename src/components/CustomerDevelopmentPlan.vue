@@ -23,20 +23,20 @@
         <!-- 表单第一行 -->
         <el-row>
           <el-col :span="12">
-            <el-form-item label="客户名称">
+            <el-form-item label="客户名称" prop="name">
               <el-input v-model="marketingOpportunityInfo.name" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="机会来源">
+            <el-form-item label="机会来源" prop="source">
               <el-input v-model="marketingOpportunityInfo.source" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="概要">
-              <el-input v-model="marketingOpportunityInfo.digest" :disabled="true"></el-input>
+            <el-form-item label="概要" prop="note">
+              <el-input v-model="marketingOpportunityInfo.note" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -44,26 +44,26 @@
         <!-- 表单第二行 -->
         <el-row>
           <el-col :span="6">
-            <el-form-item label="联系人">
-              <el-input v-model="marketingOpportunityInfo.contacts" :disabled="true"></el-input>
+            <el-form-item label="联系人" prop="contact_name">
+              <el-input v-model="marketingOpportunityInfo.contact_name" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="联系电话">
-              <el-input v-model="marketingOpportunityInfo.contactsTel" :disabled="true"></el-input>
+            <el-form-item label="联系电话" prop="contact_tel">
+              <el-input v-model="marketingOpportunityInfo.contact_tel" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="创建人">
+            <el-form-item label="创建人" prop="creator">
               <el-input v-model="marketingOpportunityInfo.creator" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="指派给">
-              <el-input v-model="marketingOpportunityInfo.designate" :disabled="true"></el-input>
+            <el-form-item label="指派给" prop="assigned_to">
+              <el-input v-model="marketingOpportunityInfo.assigned_to" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -71,12 +71,8 @@
         <!-- 表单第三行 -->
         <el-row>
           <el-col :span="24">
-            <el-form-item label="机会描述">
-              <el-input
-                type="textarea"
-                v-model="marketingOpportunityInfo.opportunityStatement"
-                :disabled="true"
-              ></el-input>
+            <el-form-item label="机会描述" prop="profile">
+              <el-input type="textarea" v-model="marketingOpportunityInfo.profile" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -84,8 +80,8 @@
         <!-- 表单第四行 -->
         <el-row>
           <el-col :span="6">
-            <el-form-item label="创建时间">
-              <el-input v-model="marketingOpportunityInfo.createDate" :disabled="true"></el-input>
+            <el-form-item label="创建时间" prop="create_time">
+              <el-input v-model="marketingOpportunityInfo.create_time" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
 
@@ -165,13 +161,13 @@
 
           <el-table-column type="index" label="序号" align="center"></el-table-column>
 
-          <el-table-column property="number" label="编号" align="center"></el-table-column>
+          <el-table-column property="id" label="编号" align="center"></el-table-column>
 
           <el-table-column property="date" label="日期" align="center"></el-table-column>
 
-          <el-table-column property="plan" label="计划项" align="center"></el-table-column>
+          <el-table-column property="content" label="计划项" align="center"></el-table-column>
 
-          <el-table-column property="situation" label="执行情况" align="center"></el-table-column>
+          <el-table-column property="status" label="执行情况" align="center"></el-table-column>
 
           <el-table-column label="编辑" align="center">
             <template>
@@ -201,8 +197,8 @@
         </el-form-item>
 
         <!-- 计划项 -->
-        <el-form-item label="计划项" prop="plan">
-          <el-input v-model="addPlanFormData.plan"></el-input>
+        <el-form-item label="计划项" prop="content">
+          <el-input v-model="addPlanFormData.content"></el-input>
         </el-form-item>
 
         <!-- 提交/重置表单按钮 -->
@@ -223,8 +219,8 @@
     <el-dialog :visible.sync="editPlanDialogVisible" title="编辑计划执行情况">
       <el-form :model="editPlanFormData" ref="editPlanFormData" label-width="100px">
         <!-- 计划执行情况 -->
-        <el-form-item label="执行情况" prop="situation">
-          <el-input v-model="editPlanFormData.situation"></el-input>
+        <el-form-item label="执行情况" prop="status">
+          <el-input v-model="editPlanFormData.status"></el-input>
         </el-form-item>
         <!-- 提交/重置表单按钮 -->
         <el-form-item>
@@ -244,6 +240,11 @@
 
 
 <script>
+import axios from "axios";
+import qs from "qs";
+import Api from "../http/api";
+import Http from "../http/http";
+axios.defaults.withCredentials = true;
 export default {
   data() {
     return {
@@ -257,55 +258,28 @@ export default {
       marketingOpportunityInfo: {
         name: "",
         source: "",
-        digest: "",
-        contacts: "",
-        contactsTel: "",
+        note: "",
+        contact_name: "",
+        contact_tel: "",
         creator: "",
-        designate: "",
-        opportunityStatement: "",
-        createDate: ""
+        assigned_to: "",
+        profile: "",
+        create_time: ""
       },
 
       //表格内容
       customerDevelopmentPlanListData: [
         {
-          number: "21321414",
+          id: "21321414",
           date: "2019-10-18",
-          plan: "与客户面谈1",
-          situation: "双方交换意见并达成合作"
-        },
-        {
-          number: "21321414",
-          date: "2019-10-18",
-          plan: "与客户面谈2",
-          situation: "双方交换意见并达成合作"
-        },
-        {
-          number: "21321414",
-          date: "2019-10-18",
-          plan: "与客户面谈3",
-          situation: "双方交换意见并达成合作"
-        },
-        {
-          number: "21321414",
-          date: "2019-10-18",
-          plan: "与客户面谈",
-          situation: "双方交换意见并达成合作"
-        },
-        {
-          number: "21321414",
-          date: "2019-10-18",
-          plan: "与客户面谈",
-          situation: "双方交换意见并达成合作"
-        },
-        {
-          number: "21321414",
-          date: "2019-10-18",
-          plan: "与客户面谈",
-          situation: "双方交换意见并达成合作"
+          content: "与客户面谈1",
+          status: "双方交换意见并达成合作"
         }
       ],
       currentRow: "",
+      probability:"",
+      currentRowStaffId:"",
+      appointedTime:"",
 
       // 对话框可见性
       addPlanDialogVisible: false,
@@ -314,7 +288,7 @@ export default {
       //对话框表单数据及限制条件
       addPlanFormData: {
         date: "",
-        plan: ""
+        content: ""
       },
       addPlanFormRules: {
         date: [
@@ -325,11 +299,11 @@ export default {
             trigger: "change"
           }
         ],
-        plan: [{ required: true, message: "请填写计划项内容", trigger: "blur" }]
+        content: [{ required: true, message: "请填写计划项内容", trigger: "blur" }]
       },
 
       editPlanFormData: {
-        situation: ""
+        status: ""
       }
     };
   },
@@ -337,13 +311,121 @@ export default {
   methods: {
     // 查询框-------------------------------------------------------
     selectByPrimaryKey(selectKey) {
-      console.log(selectKey);
+      //查询当前的营销机会
+      //以及得到
+      // axios
+      //   .all([
+      //     axios.get(Api.getCurrentCompanyOpportunityUrl, {
+      //     params: {
+      //       id: this.selectKey.value
+      //     }
+      //   }),
+
+      //     axios.get(Api.getPlansUrl, {
+      //     params: {
+      //       id: this.selectKey.value
+      //     }
+      //   })
+      //   ])
+      //   .then(
+      //     axios.spread(function(opportunityResp, plansResp) {
+      //       // 上面两个请求都完成后，才执行这个回调方法
+      //       if(opportunityResp.data.code == 1&& plansResp.data.code==1){
+
+      //         this.customerDevelopmentPlanListData = plansResp.data.data;
+      //         console.log("marketingOpportunityInfo::",opportunityResp.data.data);
+      //         this.marketingOpportunityInfo.name = opportunityResp.data.data.name;
+      //       }else {
+      //         this.$message({
+      //           type:"failed",
+      //           message:"信息获取失败"
+      //         })
+      //       }
+      //     })
+      //   );
+      axios
+        .get(Api.getCurrentCompanyOpportunityUrl, {
+          params: {
+            id: this.selectKey.value
+          }
+        })
+        .then(res => {
+          if (res.data.code == 1) {
+            this.marketingOpportunityInfo = res.data.data;
+            this.currentRowStaffId = res.data.data.assigned_to_id;
+            this.probability = res.data.data.probability;
+            this.appointedTime = res.data.data.appointed_time;
+          } else {
+            this.$message({
+              type: "failed",
+              message: "加载失败，请重试！！"
+            });
+          }
+        });
+      //查看当前营销机会是否含有计划项
+      this.$options.methods.getPlans(this.selectKey.value);
+    },
+
+    getPlans(selectKey) {
+      axios
+        .get(Api.getPlansUrl, {
+          params: {
+            id: selectKey
+          }
+        })
+        .then(res => {
+          if (res.data.code == 1) {
+            this.customerDevelopmentPlanListData = res.data.data;
+            this.$options.methods.refreshList();
+            console.log(
+              "当前计划项：" + this.customerDevelopmentPlanListData[0].id
+            );
+          } else {
+            this.$message({
+              type: "failed",
+              message: "编号填写错误！！"
+            });
+          }
+        });
+
+      
     },
 
     // 表单----------------------------------------------------------
     // 提交表单点击事件
     completeDevelopment() {
       //修改此次营销机会的状态
+       axios
+        .post(
+          Api.updateMarketingOpportunityUrl,
+          qs.stringify({
+            id: this.selectKey.value,
+            source: this.marketingOpportunityInfo.source,
+            name: this.marketingOpportunityInfo.name,
+            profile: this.marketingOpportunityInfo.profile,
+            note: this.marketingOpportunityInfo.note,
+            contactName: this.marketingOpportunityInfo.contact_name,
+            contactTel: this.marketingOpportunityInfo.contact_tel,
+            probability: this.probability,
+            refEpeId: this.currentRowStaffId,
+            appointedTime: this.appointedTime,
+            status:"已完成"
+          })
+        )
+        .then(res => {
+          if (res.data.code == 1) {
+            this.$message({
+              type: "success",
+              message: "修改成功！！",
+              
+            });
+          } else {
+            this.$message({
+              type: "failed",
+              message: "修改失败，请重试！！"
+            });
+          }
+        });
     },
 
     // 表格---------------------------------------------------------
@@ -356,6 +438,7 @@ export default {
     editPlan() {
       this.editPlanDialogVisible = true;
       console.log(this.currentRow);
+      this.editPlanFormData.status  = this.currentRow.status;
     },
 
     // 表格控制当前选中行
@@ -368,7 +451,22 @@ export default {
 
     // 刷新列表
     refreshList() {
-      console.log("refresh");
+      axios
+        .get(Api.getPlansUrl, {
+          params: {
+            id: this.selectKey.value
+          }
+        })
+        .then(res => {
+          if (res.data.code == 1) {
+            this.customerDevelopmentPlanListData = res.data.data;
+          } else {
+            this.$message({
+              type: "failed",
+              message: "编号填写错误！！"
+            });
+          }
+        });
     },
 
     // 取消选择
@@ -382,7 +480,36 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // 提交成功
-          console.log(this.addPlanFormData.date);
+          if (this.selectKey.value == "") {
+        this.$message({
+          type: "failed",
+          message: "请输入营销编号！！"
+        });
+      } else {
+        axios
+          .post(
+            Api.createPlansUrl,
+            qs.stringify({
+              chanceId: this.selectKey.value,
+              date: this.addPlanFormData.date,
+              content: this.addPlanFormData.content
+            })
+          )
+          .then(res => {
+            if (res.data.code == 1) {
+              this.$options.methods.refreshList();
+              this.$message({
+                type: "success",
+                message: "添加成功！！"
+              });
+            } else {
+              this.$message({
+                type: "failed",
+                message: "添加失败，请重试！！"
+              });
+            }
+          });
+      }
           this.addPlanDialogVisible = false;
           this.$refs[formName].resetFields();
         } else {
@@ -398,12 +525,40 @@ export default {
 
     //  "编辑计划执行情况"对话框----------------------------------------------
     submitEditPlanForm(formName) {
+      axios
+          .post(
+            Api.updatePlanUrl,
+            qs.stringify({
+              id: this.currentRow.id,
+              status: this.editPlanFormData.status         
+            },
+            {
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                  }
+                }
+            )
+          )
+          .then(res => {
+            if (res.data.code == 1) {
+              this.$options.methods.refreshList();
+              this.$message({
+                type: "success",
+                message: "添加c成功！！"
+              });
+            } else {
+              this.$message({
+                type: "failed",
+                message: "添加失败，请重试！！"
+              });
+            }
+          });
       this.editPlanDialogVisible = false;
       this.$refs[formName].resetFields();
     },
     resetEditPlanForm(formName) {
       this.$refs[formName].resetFields();
-    },
+    }
   }
 };
 </script>

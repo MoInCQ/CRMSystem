@@ -33,13 +33,13 @@
             <el-row style="height:40px">
               <div
                 style="font-size:15px; font-weight: bold; text-align:left; color:#000000; margin:10px 0px 0px 3px"
-              >蔡徐坤</div>
+              >{{userName}}</div>
             </el-row>
 
             <el-row style="height:30px">
               <div
                 style="font-size:12px; text-align:left; color:#303133; margin:0px 0px 0px 3px"
-              >超级管理员</div>
+              >{{userType}}</div>
             </el-row>
           </el-col>
         </el-row>
@@ -123,20 +123,63 @@
 
 
 <script>
+
+import axios from "axios";
+import Api from "../http/api";
+axios.defaults.withCredentials = true;
+
 export default {
   data() {
     return {
       logoUrl: require("../assets/logoPic.jpg"),
       circleUrl: require("../assets/circlePic.jpg"),
       activeIndex: '/Home/Console',
+
+      userName: "",
+      userType: "",
     };
+  },
+
+
+   mounted: function() {
+    axios.get(Api.getCurrentLoginAccountInfoUrl).then(res => {
+      if (res.data.code == 1) {
+        this.userName = res.data.data.name;
+        if (res.data.data.type == "ADMIN") {
+          this.userType = "超级管理员";
+        } else {
+          this.userType = "未知";
+        }
+      } else {
+        this.$message({
+          showClose: true,
+          message: "请求个人信息失败",
+          type: "error"
+        });
+      }
+    });
   },
 
   methods: {
     // 退出登录
     logOut() {
-      console.log("logout success");
-      this.$router.push("/");
+      axios.post(Api.logoutUrl).then(res => {
+
+        if (res.data.code == 1) {
+          this.$message({
+            showClose: true,
+            message: "注销登录成功",
+            type: "success"
+          });
+          this.$router.push("/");
+        } else {
+          this.$message({
+            showClose: true,
+            message: "未知错误",
+            type: "error"
+          });
+        }
+      });
     }
   }
 };
