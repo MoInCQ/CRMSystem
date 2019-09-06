@@ -6,6 +6,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import {get,formPost,urlencodedPost} from './http/http'
 
+// 引入Echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 
 
 
