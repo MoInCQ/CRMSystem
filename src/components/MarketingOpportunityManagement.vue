@@ -12,7 +12,11 @@
     <!-- 查询框 -->
     <el-row style="margin: 0px 0px 30px 0px">
       <el-col :span="18">
-        <el-input placeholder="请输入内容" v-model="selectKey.value" style="background-color: #fff;">
+        <el-input
+          placeholder="请输入内容"
+          v-model="selectKey.value"
+          style="background-color: #fff;"
+        >
           <el-select
             v-model="selectKey.type"
             slot="prepend"
@@ -23,13 +27,20 @@
             <el-option label="概要" value="keyword"></el-option>
             <el-option label="联系人" value="contact"></el-option>
           </el-select>
-          <el-button slot="append" icon="el-icon-search" @click="selectByPrimaryKey(selectKey)">查询</el-button>
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="selectByPrimaryKey(selectKey)"
+            >查询</el-button
+          >
         </el-input>
       </el-col>
 
       <!-- 创建营销 -->
       <el-col :span="2" :offset="1">
-        <el-button type="primary" round @click="creatingMarketingOpportunity()">创建营销机会</el-button>
+        <el-button type="primary" round @click="creatingMarketingOpportunity()"
+          >创建营销机会</el-button
+        >
       </el-col>
     </el-row>
 
@@ -42,7 +53,9 @@
             <el-col :span="18">
               <div
                 style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
-              >营销机会列表</div>
+              >
+                营销机会列表
+              </div>
             </el-col>
 
             <el-col :span="2">
@@ -51,7 +64,8 @@
                 type="text"
                 icon="el-icon-refresh"
                 @click="refreshList()"
-              >刷新列表</el-button>
+                >刷新列表</el-button
+              >
             </el-col>
             <el-col :span="2">
               <el-button
@@ -59,7 +73,8 @@
                 type="text"
                 icon="el-icon-delete"
                 @click="deleteInBatches()"
-              >批量删除</el-button>
+                >批量删除</el-button
+              >
             </el-col>
 
             <el-col :span="2">
@@ -68,7 +83,8 @@
                 type="text"
                 icon="el-icon-close"
                 @click="toggleSelection()"
-              >取消选择</el-button>
+                >取消选择</el-button
+              >
             </el-col>
           </el-row>
         </div>
@@ -83,22 +99,54 @@
           @current-change="handleCurrentChange"
           style="width: 100%"
         >
-          <el-table-column fixed="left" type="selection" width="55"></el-table-column>
+          <el-table-column
+            fixed="left"
+            type="selection"
+            width="55"
+          ></el-table-column>
 
-          <el-table-column type="index" label="序号" align="center"></el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+          ></el-table-column>
 
           <!-- 用于“客户开发计划”页面的主键 -->
-          <el-table-column property="id" label="编号" align="center"></el-table-column>
+          <el-table-column
+            property="id"
+            label="编号"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="name" label="公司名称" align="center"></el-table-column>
+          <el-table-column
+            property="name"
+            label="公司名称"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="note" label="概要" align="center"></el-table-column>
+          <el-table-column
+            property="note"
+            label="概要"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="contact_name" label="联系人" align="center"></el-table-column>
+          <el-table-column
+            property="contact_name"
+            label="联系人"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="contact_tel" label="联系电话" align="center"></el-table-column>
+          <el-table-column
+            property="contact_tel"
+            label="联系电话"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="create_time" label="创建时间" align="center"></el-table-column>
+          <el-table-column
+            property="create_time"
+            label="创建时间"
+            align="center"
+          ></el-table-column>
 
           <el-table-column label="修改营销机会" align="center">
             <template>
@@ -133,32 +181,49 @@
 
         <!-- 机会来源 -->
         <el-form-item label="机会来源" prop="source">
-          <el-input v-model="creatingMarketingOpportunityForm.source"></el-input>
+          <el-input
+            v-model="creatingMarketingOpportunityForm.source"
+          ></el-input>
         </el-form-item>
 
         <!-- 成功几率 -->
-        <el-form-item label="成功几率" prop="probability" placeholder="请填入0-100的百分值（%）">
-          <el-input v-model.number="creatingMarketingOpportunityForm.probability"></el-input>
+        <el-form-item
+          label="成功几率"
+          prop="probability"
+          placeholder="请填入0-100的百分值（%）"
+        >
+          <el-input
+            v-model.number="creatingMarketingOpportunityForm.probability"
+          ></el-input>
         </el-form-item>
 
         <!-- 概要 -->
         <el-form-item label="概要" prop="profile">
-          <el-input v-model="creatingMarketingOpportunityForm.profile"></el-input>
+          <el-input
+            v-model="creatingMarketingOpportunityForm.profile"
+          ></el-input>
         </el-form-item>
 
         <!-- 联系人 -->
         <el-form-item label="联系人" prop="contactName">
-          <el-input v-model="creatingMarketingOpportunityForm.contactName"></el-input>
+          <el-input
+            v-model="creatingMarketingOpportunityForm.contactName"
+          ></el-input>
         </el-form-item>
 
         <!-- 联系人电话 -->
         <el-form-item label="联系人电话" prop="contactTel">
-          <el-input v-model.number="creatingMarketingOpportunityForm.contactTel"></el-input>
+          <el-input
+            v-model.number="creatingMarketingOpportunityForm.contactTel"
+          ></el-input>
         </el-form-item>
 
         <!-- 机会描述 -->
         <el-form-item label="机会描述" prop="note">
-          <el-input type="textarea" v-model="creatingMarketingOpportunityForm.note"></el-input>
+          <el-input
+            type="textarea"
+            v-model="creatingMarketingOpportunityForm.note"
+          ></el-input>
         </el-form-item>
 
         <el-form-item label="指派日期" prop="appointedTime">
@@ -193,10 +258,16 @@
         <el-form-item>
           <el-row>
             <el-col :span="4" :offset="15">
-              <el-button type="primary" @click="submitForm('creatingMarketingOpportunityForm')">确定提交</el-button>
+              <el-button
+                type="primary"
+                @click="submitForm('creatingMarketingOpportunityForm')"
+                >确定提交</el-button
+              >
             </el-col>
             <el-col :span="4" :offset="1">
-              <el-button @click="resetForm('creatingMarketingOpportunityForm')">重置表单</el-button>
+              <el-button @click="resetForm('creatingMarketingOpportunityForm')"
+                >重置表单</el-button
+              >
             </el-col>
           </el-row>
         </el-form-item>
@@ -651,4 +722,3 @@ export default {
   }
 };
 </script>
-

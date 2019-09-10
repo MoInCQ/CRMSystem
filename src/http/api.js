@@ -101,7 +101,6 @@ export default {
   getHistoryUrl,
   getHistoryDetailUrl,
   getIntercourseInfoUrl,
-  createIntercourseDetailsUrl,
   updateIntercourseDetailsUrl,
   deleteInterCourseUrl,
   getAndUpdateCustomerLoseUrl,
@@ -112,5 +111,5 @@ export default {
   getProductsUrl,
   getStocksUrl,
   consoleUrl,
-  updateServiceUrl,
+  updateServiceUrl
 };

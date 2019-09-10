@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <el-row style="height:50px"></el-row>
@@ -9,14 +8,25 @@
             <el-card>
               <el-row>
                 <el-col :span="18">
-                  <el-image :src="imageUrl" style="height:500px" :fit="imgFit"></el-image>
+                  <el-image
+                    :src="imageUrl"
+                    style="height:500px"
+                    :fit="imgFit"
+                  ></el-image>
                 </el-col>
 
                 <el-col :span="5" style="margin-left:20px">
-                  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
+                  <el-form
+                    :model="ruleForm"
+                    :rules="rules"
+                    ref="ruleForm"
+                    label-width="80px"
+                  >
                     <h3
                       style="font-weight:bolder; font-size:larger; marginTop: 80px; margin-bottom: 30px"
-                    >注册</h3>
+                    >
+                      注册
+                    </h3>
 
                     <el-form-item label="电子邮件" prop="email">
                       <el-input v-model="ruleForm.email"></el-input>
@@ -27,15 +37,28 @@
                     </el-form-item>
 
                     <el-form-item label="密码" prop="pwd">
-                      <el-input type="password" v-model="ruleForm.pwd" auto-complete="off"></el-input>
+                      <el-input
+                        type="password"
+                        v-model="ruleForm.pwd"
+                        auto-complete="off"
+                      ></el-input>
                     </el-form-item>
 
                     <el-form-item label="确认密码" prop="checkPass">
-                      <el-input type="password" v-model="ruleForm.checkPass" auto-complete="off"></el-input>
+                      <el-input
+                        type="password"
+                        v-model="ruleForm.checkPass"
+                        auto-complete="off"
+                      ></el-input>
                     </el-form-item>
 
                     <el-form-item>
-                      <el-button type="primary" class="submitBtn" @click="submitForm('ruleForm')">注册</el-button>
+                      <el-button
+                        type="primary"
+                        class="submitBtn"
+                        @click="submitForm('ruleForm')"
+                        >注册</el-button
+                      >
                     </el-form-item>
                   </el-form>
                 </el-col>
@@ -46,13 +69,13 @@
       </el-main>
 
       <el-footer style="marginTop:30px">
-        <el-divider content-position="center">Copyright @ 东软客户关系管理系统</el-divider>
+        <el-divider content-position="center"
+          >Copyright @ 东软客户关系管理系统</el-divider
+        >
       </el-footer>
     </el-container>
   </div>
 </template>
-
-
 
 <script>
 //import { constants } from "crypto";

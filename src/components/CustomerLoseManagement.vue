@@ -27,19 +27,20 @@
             <el-col :span="16">
               <div
                 style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
-              >客户流失管理列表</div>
+              >
+                客户流失管理列表
+              </div>
             </el-col>
 
-
             <el-col :span="2" :offset="6">
-                    <el-button
-                      style="float: right; padding: 3px 0 ; height:40px; text-align:center"
-                      type="text"
-                      icon="el-icon-refresh"
-                      @click="refreshList()"
-                    >刷新列表</el-button>
-                  </el-col>
-
+              <el-button
+                style="float: right; padding: 3px 0 ; height:40px; text-align:center"
+                type="text"
+                icon="el-icon-refresh"
+                @click="refreshList()"
+                >刷新列表</el-button
+              >
+            </el-col>
           </el-row>
         </div>
 
@@ -53,21 +54,44 @@
           @current-change="handleCurrentChange"
           style="width: 100%"
         >
-          <el-table-column type="index" label="序号" align="center"></el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="id" label="客户编号" align="center"></el-table-column>
+          <el-table-column
+            property="id"
+            label="客户编号"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="manager_name" label="客户经理" align="center"></el-table-column>
+          <el-table-column
+            property="manager_name"
+            label="客户经理"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="last_order_time" label="上次下单时间" align="center"></el-table-column>
+          <el-table-column
+            property="last_order_time"
+            label="上次下单时间"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="lost_time" label="确认流失时间" align="center"></el-table-column>
+          <el-table-column
+            property="lost_time"
+            label="确认流失时间"
+            align="center"
+          ></el-table-column>
 
           <el-table-column
             prop="status"
             label="状态"
             width="100"
-            :filters="[{ text: '暂缓流失', value: '暂缓流失' }, { text: '已流失', value: '已流失' }]"
+            :filters="[
+              { text: '暂缓流失', value: '暂缓流失' },
+              { text: '已流失', value: '已流失' }
+            ]"
             :filter-method="filterTag"
             filter-placement="bottom-end"
             align="center"
@@ -76,7 +100,8 @@
               <el-tag
                 :type="scope.row.status === '暂缓流失' ? 'primary' : 'danger'"
                 disable-transitions
-              >{{scope.row.status}}</el-tag>
+                >{{ scope.row.status }}</el-tag
+              >
             </template>
           </el-table-column>
 
@@ -114,7 +139,10 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="暂缓措施" prop="measureOrReason">
-          <el-input type="textarea" v-model="postponeCustomerLoseInfoFormData.measureOrReason"></el-input>
+          <el-input
+            type="textarea"
+            v-model="postponeCustomerLoseInfoFormData.measureOrReason"
+          ></el-input>
         </el-form-item>
 
         <!-- 提交表单按钮 -->
@@ -125,7 +153,8 @@
                 style="width:100%"
                 type="primary"
                 @click="submitPostponeCustomerLoseInfoForm()"
-              >提交暂缓措施</el-button>
+                >提交暂缓措施</el-button
+              >
             </el-col>
           </el-row>
         </el-form-item>
@@ -152,7 +181,10 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="流失原因" prop="measureOrReason">
-          <el-input type="textarea" v-model="confirmCustomerLoseInfoFormData.measureOrReason"></el-input>
+          <el-input
+            type="textarea"
+            v-model="confirmCustomerLoseInfoFormData.measureOrReason"
+          ></el-input>
         </el-form-item>
 
         <!-- 提交表单按钮 -->
@@ -163,7 +195,8 @@
                 style="width:100%"
                 type="danger"
                 @click="submitConfirmCustomerLoseInfoForm()"
-              >确认流失</el-button>
+                >确认流失</el-button
+              >
             </el-col>
           </el-row>
         </el-form-item>
@@ -238,18 +271,17 @@ export default {
     //   console.log(selectKey);
     // },
 
-    refreshList(){
+    refreshList() {
       axios.get(Api.getAndUpdateCustomerLoseUrl).then(res => {
-      if (res.data.code == 1) {
-        this.customerLoseListData = res.data.data;
-      } else {
-        this.$message({
-          type: "failed",
-          message: "拉取失败，请重试！！"
-        });
-      }
-    });
-
+        if (res.data.code == 1) {
+          this.customerLoseListData = res.data.data;
+        } else {
+          this.$message({
+            type: "failed",
+            message: "拉取失败，请重试！！"
+          });
+        }
+      });
     },
 
     // 表格控制当前选中行
@@ -266,19 +298,18 @@ export default {
     editPostponeCustomerLoseInfo() {
       if (this.currentRow.status == "暂缓流失") {
         this.postponeCustomerLoseInfoFormData.status = this.currentRow.status;
-        console.log("当前行的状态"+this.currentRow.measure_or_reason);
+        console.log("当前行的状态" + this.currentRow.measure_or_reason);
         this.postponeCustomerLoseInfoFormData.measureOrReason = this.currentRow.measure_or_reason;
         this.postponeCustomerLoseDialogVisible = true;
       } else {
-        
-        console.log("当前行的状态"+this.currentRow);
+        console.log("当前行的状态" + this.currentRow);
         this.confirmCustomerLoseInfoFormData.status = this.currentRow.status;
         this.confirmCustomerLoseInfoFormData.measureOrReason = this.currentRow.measure_or_reason;
 
         this.confirmCustomerLoseDialogVisible = true;
       }
     },
-    getLostCustomer(){
+    getLostCustomer() {
       //得到所有流失客户
       axios.get(Api.getAndUpdateCustomerLoseUrl).then(res => {
         if (res.data.code == 1) {
@@ -294,7 +325,7 @@ export default {
     },
 
     // 提交暂缓措施
-   submitPostponeCustomerLoseInfoForm:async function() {
+    submitPostponeCustomerLoseInfoForm: async function() {
       if (this.postponeCustomerLoseInfoFormData.measureOrReason != null) {
         axios
           .post(
@@ -320,7 +351,7 @@ export default {
               });
             }
           });
-          this.$options.methods.getLostCustomer();
+        this.$options.methods.getLostCustomer();
       }
     },
 
@@ -351,7 +382,7 @@ export default {
               });
             }
           });
-          this.$options.methods.getLostCustomer();
+        this.$options.methods.getLostCustomer();
       }
     }
   }

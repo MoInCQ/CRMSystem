@@ -3,7 +3,11 @@
     <!-- 查询框 -->
     <el-row style="margin: 0px 0px 30px 0px">
       <el-col :span="18">
-        <el-input placeholder="请输入内容" v-model="selectKey.value" style="background-color: #fff;">
+        <el-input
+          placeholder="请输入内容"
+          v-model="selectKey.value"
+          style="background-color: #fff;"
+        >
           <el-select
             v-model="selectKey.type"
             slot="prepend"
@@ -11,7 +15,12 @@
             style="width: 130px; "
             disabled
           ></el-select>
-          <el-button slot="append" icon="el-icon-search" @click="selectByPrimaryKey(selectKey)">查询</el-button>
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="selectByPrimaryKey(selectKey)"
+            >查询</el-button
+          >
         </el-input>
       </el-col>
     </el-row>
@@ -35,7 +44,11 @@
 
             <el-col :span="12">
               <el-form-item label="服务类型">
-                <el-select v-model="ServiceInfoFormData.type" style="width:100%" :disabled="true">
+                <el-select
+                  v-model="ServiceInfoFormData.type"
+                  style="width:100%"
+                  :disabled="true"
+                >
                   <el-option label="咨询" value="咨询"></el-option>
                   <el-option label="建议" value="建议"></el-option>
                   <el-option label="计划" value="计划"></el-option>
@@ -72,7 +85,11 @@
           <el-row>
             <el-col :span="24">
               <el-form-item label="概要">
-                <el-input v-model="ServiceInfoFormData.summary" style="width:100%" :disabled="true"></el-input>
+                <el-input
+                  v-model="ServiceInfoFormData.summary"
+                  style="width:100%"
+                  :disabled="true"
+                ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -160,7 +177,8 @@
                   type="primary"
                   @click="submitServiceAllocationForm()"
                   style="width: 100%"
-                >分配服务</el-button>
+                  >分配服务</el-button
+                >
               </el-col>
             </el-row>
           </el-form-item>
@@ -223,7 +241,8 @@
                   type="primary"
                   @click="submitServiceDisposeForm()"
                   style="width: 100%"
-                >处理服务</el-button>
+                  >处理服务</el-button
+                >
               </el-col>
             </el-row>
           </el-form-item>
@@ -237,13 +256,18 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="处理结果">
-                <el-input v-model="ServiceInfoFormData.handle_result" style="width:100%"></el-input>
+                <el-input
+                  v-model="ServiceInfoFormData.handle_result"
+                  style="width:100%"
+                ></el-input>
               </el-form-item>
             </el-col>
 
             <el-col :span="12">
               <el-form-item label="满意度">
-                <el-rate v-model="ServiceInfoFormData.handle_satisfaction"></el-rate>
+                <el-rate
+                  v-model="ServiceInfoFormData.handle_satisfaction"
+                ></el-rate>
               </el-form-item>
             </el-col>
           </el-row>
@@ -257,7 +281,8 @@
                   type="primary"
                   @click="submitServiceFeedbackForm()"
                   style="width: 100%"
-                >反馈服务</el-button>
+                  >反馈服务</el-button
+                >
               </el-col>
             </el-row>
           </el-form-item>

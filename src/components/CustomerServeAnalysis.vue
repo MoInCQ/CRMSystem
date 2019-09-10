@@ -1,11 +1,10 @@
 <template>
   <div>
     <!-- 查询框 -->
-    
 
     <!-- 折线图 -->
     <el-row>
-      <div id="lineChart" :style="{width: '1100px', height: '440px'}"></div>
+      <div id="lineChart" :style="{ width: '1100px', height: '440px' }"></div>
     </el-row>
 
     <el-row style="margin-top:15px">
@@ -17,7 +16,9 @@
             <el-col :span="16">
               <div
                 style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
-              >客户服务分析列表</div>
+              >
+                客户服务分析列表
+              </div>
             </el-col>
           </el-row>
         </div>
@@ -31,13 +32,29 @@
           border
           style="width: 100%"
         >
-          <el-table-column type="index" label="序号" align="center"></el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="number" label="客户编号" align="center"></el-table-column>
+          <el-table-column
+            property="number"
+            label="客户编号"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="item" label="条目" align="center"></el-table-column>
+          <el-table-column
+            property="item"
+            label="条目"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="amount" label="服务数量" align="center"></el-table-column>
+          <el-table-column
+            property="amount"
+            label="服务数量"
+            align="center"
+          ></el-table-column>
         </el-table>
       </el-card>
     </el-row>
@@ -48,8 +65,6 @@
 export default {
   data() {
     return {
-     
-
       // “客户服务信息”列表数据
       customerServeAnalysisListData: [
         {
@@ -74,7 +89,6 @@ export default {
     this.drawLine();
   },
   methods: {
-
     drawLine() {
       // 基于准备好的dom，初始化echarts实例
       let lineChart = this.$echarts.init(document.getElementById("lineChart"));
@@ -84,7 +98,7 @@ export default {
           trigger: "axis"
         },
         legend: {
-          data: ["建议", "咨询", "投诉", ]
+          data: ["建议", "咨询", "投诉"]
         },
         grid: {
           left: "3%",
