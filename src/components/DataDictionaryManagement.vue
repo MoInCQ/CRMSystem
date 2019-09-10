@@ -3,9 +3,24 @@
     <!-- 查询框 -->
     <el-row style="margin: 0px 0px 30px 0px">
       <el-col :span="18">
-        <el-input placeholder="请输入内容" v-model="search" style="background-color: #fff;">
-          <el-select slot="prepend" placeholder="类别" style="width: 130px; " disabled></el-select>
-          <el-button slot="append" icon="el-icon-search" @click="selectByPrimaryKey(selectKey)">查询</el-button>
+        <el-input
+          placeholder="请输入内容"
+          v-model="search"
+          style="background-color: #fff;"
+        >
+          <el-select
+            slot="prepend"
+            :value="selectValue"
+            placeholder="类别"
+            style="width: 130px;"
+            disabled
+          ></el-select>
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="selectByPrimaryKey(selectKey)"
+            >查询</el-button
+          >
         </el-input>
       </el-col>
     </el-row>
@@ -19,7 +34,9 @@
             <el-col :span="16">
               <div
                 style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
-              >数据字典列表</div>
+              >
+                数据字典列表
+              </div>
             </el-col>
 
             <!-- <el-col :span="2">
@@ -29,7 +46,7 @@
                 icon="el-icon-plus"
                 @click="addDictionary()"
               >创建条目</el-button>
-            </el-col> -->
+            </el-col>-->
 
             <!-- <el-col :span="2">
               <el-button
@@ -38,7 +55,7 @@
                 icon="el-icon-delete"
                 @click="deleteDictionaryInBatches()"
               >批量删除</el-button>
-            </el-col> -->
+            </el-col>-->
 
             <!-- <el-col :span="2">
               <el-button
@@ -47,7 +64,7 @@
                 icon="el-icon-close"
                 @click="toggleDictionarySelection()"
               >取消选择</el-button>
-            </el-col> -->
+            </el-col>-->
           </el-row>
         </div>
 
@@ -60,23 +77,56 @@
           @current-change="handleCurrentChange"
           style="width: 100%"
         >
-          <el-table-column fixed="left" type="selection" width="55"></el-table-column>
+          <el-table-column
+            fixed="left"
+            type="selection"
+            width="55"
+          ></el-table-column>
 
-          <el-table-column type="index" label="序号" align="center"></el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="number" label="编号" align="center"></el-table-column>
+          <el-table-column
+            property="number"
+            label="编号"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="type" label="类别" align="center"></el-table-column>
+          <el-table-column
+            property="type"
+            label="类别"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="title" label="条目" align="center"></el-table-column>
+          <el-table-column
+            property="title"
+            label="条目"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="value" label="值" align="center"></el-table-column>
+          <el-table-column
+            property="value"
+            label="值"
+            align="center"
+          ></el-table-column>
 
-          <el-table-column property="isEditable" label="是否可编辑" align="center"></el-table-column>
+          <el-table-column
+            property="isEditable"
+            label="是否可编辑"
+            align="center"
+          ></el-table-column>
 
           <el-table-column label="编辑" align="center">
             <template>
-              <el-button @click="editDictionaryInfo()" icon="el-icon-edit" circle size="small"></el-button>
+              <el-button
+                @click="editDictionaryInfo()"
+                icon="el-icon-edit"
+                circle
+                size="small"
+              ></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -85,7 +135,11 @@
 
     <!-- “添加/修改联系人”弹出框 -->
     <el-dialog ref="create_item_dialog" :visible.sync="createItemDialogVisible">
-      <el-form :model="createItemFormData" ref="createItemFormData" label-width="100px">
+      <el-form
+        :model="createItemFormData"
+        ref="createItemFormData"
+        label-width="100px"
+      >
         <el-form-item label="类别" prop="type">
           <el-input v-model="createItemFormData.type"></el-input>
         </el-form-item>
@@ -109,7 +163,9 @@
         <el-form-item>
           <el-row>
             <el-col :span="4" :offset="20">
-              <el-button type="primary" @click="submitCreateItemForm()">提交</el-button>
+              <el-button type="primary" @click="submitCreateItemForm()"
+                >提交</el-button
+              >
             </el-col>
           </el-row>
         </el-form-item>
@@ -122,6 +178,7 @@
 export default {
   data() {
     return {
+      selectValue: "",
       // 查询类型
       selectKey: {
         type: "",
@@ -241,9 +298,7 @@ export default {
     },
 
     // 批量删除联系人
-    deleteDictionaryInBatches() {
-
-    },
+    deleteDictionaryInBatches() {},
 
     // 取消选择联系人
     toggleDictionarySelection() {
@@ -263,8 +318,6 @@ export default {
           this.Num += Math.floor(Math.random() * 10);
         }
 
-
-       
         this.dictionaryListData[0].number = this.Num;
         this.dictionaryListData[0] = this.createItemFormData;
       }

@@ -8,7 +8,11 @@
             <el-card>
               <el-row>
                 <el-col :span="18">
-                  <el-image :src="imageUrl" style="height:500px" :fit="cover"></el-image>
+                  <el-image
+                    :src="imageUrl"
+                    style="height:500px"
+                    :fit="imgFit"
+                  ></el-image>
                 </el-col>
 
                 <el-col :span="5" :offset="1">
@@ -21,14 +25,24 @@
                   >
                     <h3
                       style="font-weight:bolder; font-size:larger; marginTop: 80px; margin-bottom: 30px"
-                    >登录</h3>
+                    >
+                      登录
+                    </h3>
 
                     <el-form-item prop="id">
-                      <el-input type="text" v-model="LoginForm.id" placeholder="请输入电话号码或者电子邮箱"></el-input>
+                      <el-input
+                        type="text"
+                        v-model="LoginForm.id"
+                        placeholder="请输入电话号码或者电子邮箱"
+                      ></el-input>
                     </el-form-item>
 
                     <el-form-item prop="pwd">
-                      <el-input type="password" v-model="LoginForm.pwd" placeholder="请输入密码"></el-input>
+                      <el-input
+                        type="password"
+                        v-model="LoginForm.pwd"
+                        placeholder="请输入密码"
+                      ></el-input>
                     </el-form-item>
 
                     <el-form-item>
@@ -38,7 +52,8 @@
                         align="center"
                         round
                         @click.native.prevent="submit('LoginForm')"
-                      >登录</el-button>
+                        >登录</el-button
+                      >
 
                       <el-divider></el-divider>
                       <p>
@@ -55,7 +70,9 @@
       </el-main>
 
       <el-footer style="marginTop:30px">
-        <el-divider content-position="center">Copyright @ 东软客户关系管理系统</el-divider>
+        <el-divider content-position="center"
+          >Copyright @ 东软客户关系管理系统</el-divider
+        >
       </el-footer>
     </el-container>
   </div>
@@ -81,6 +98,7 @@ export default {
       }
     };
     return {
+      imgFit: "cover",
       activeName: "first",
       LoginForm: {
         email: "",
@@ -90,9 +108,9 @@ export default {
         id: [
           {
             required: true,
-            max: 14,
+            max: 20,
             min: 2,
-            message: "用户名是必须的，长度为2-14位",
+            message: "用户名是必须的，长度为2-20位",
             trigger: "blur"
           }
         ],
@@ -128,9 +146,13 @@ export default {
               )
             )
             .then(res => {
-              console.log("登录状态码"+res.data.code);
+              console.log("登录状态码" + res.data.code);
               if (res.data.code == 1) {
                 this.$router.push("/Home");
+                this.$message({
+                  type: "success",
+                  message: "登陆成功"
+                });
               } else {
                 this.$message({
                   type: "failed",

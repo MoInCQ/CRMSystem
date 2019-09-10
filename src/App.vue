@@ -4,32 +4,29 @@
   </div>
 </template>
 
-
-
 <script>
 export default {
-  name: 'App',
-  provide (){
-     return {
-       reload:this.reload
-     }
-  },
-  data(){
+  name: "App",
+  provide() {
     return {
-       isRouterAlive:true
+      reload: this.reload
+    };
+  },
+  data() {
+    return {
+      isRouterAlive: true
+    };
+  },
+  methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function() {
+        this.isRouterAlive = true;
+      });
     }
   },
-  methods:{
-    reload (){
-       this.isRouterAlive = false
-       this.$nextTick(function(){
-          this.isRouterAlive = true
-       })
-    }
-  },
-  components:{
-  }
-}
+  components: {}
+};
 </script>
 
 <style lang="stylus">

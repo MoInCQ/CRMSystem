@@ -463,7 +463,11 @@
     </el-row>
 
     <!-- "新建/修改客户"弹出框 -->
-    <el-dialog ref="create_new_customer_dialog" :visible.sync="createNewCustomerDialogVisible">
+    <el-dialog
+      ref="create_new_customer_dialog"
+      :visible.sync="createNewCustomerDialogVisible"
+      :title="popUpCustomerDialogTitle"
+    >
       <el-form
         ref="customerInfoData"
         :model="customerInfoData"
@@ -651,7 +655,11 @@
     </el-dialog>
 
     <!-- “添加/修改联系人”弹出框 -->
-    <el-dialog ref="create_contacts_dialog" :visible.sync="createContactsDialogVisible">
+    <el-dialog
+      ref="create_contacts_dialog"
+      :visible.sync="createContactsDialogVisible"
+      :title="popUpContactDialogTitle"
+    >
       <el-form
         :model="createContactsFormData"
         :rules="contactsRules"
@@ -761,7 +769,11 @@
     </el-dialog>
 
     <!-- “添加/修改交易信息记录”弹出框 -->
-    <el-dialog ref="create_intercourse_dialog" :visible.sync="createIntercourseDialogVisible">
+    <el-dialog
+      ref="create_intercourse_dialog"
+      :visible.sync="createIntercourseDialogVisible"
+      :title="popUpTradeDialogTitle"
+    >
       <el-form
         :model="createIntercourseFormData"
         ref="createIntercourseFormData"
@@ -799,7 +811,9 @@
             <el-col :span="4" :offset="15">
               <el-button
                 type="primary"
-                @click="submitCreateIntercourseForm('createIntercourseFormData')"
+                @click="
+                  submitCreateIntercourseForm('createIntercourseFormData')
+                "
               >确定提交</el-button>
             </el-col>
             <el-col :span="4" :offset="1">
@@ -820,6 +834,10 @@ axios.defaults.withCredentials = true;
 export default {
   data() {
     return {
+      popUpCustomerDialogTitle: "新建客户",
+      popUpContactDialogTitle: "新建联系人",
+      popUpTradeDialogTitle: "添加交易",
+
       // 查询类型
       selectKey: {
         type: "",
@@ -829,7 +847,7 @@ export default {
       // “新建客户/修改客户信息”弹出框显示控制
       createNewCustomerDialogVisible: false,
 
-      // 折叠面板活跃项
+      // 折叠面板活跃项 collapseActiveName: "1",
       collapseActiveName: "1",
 
       // 客户基本信息相关----------------------------------------------------------------
@@ -1069,9 +1087,33 @@ export default {
     },
 
     getDiffrentInfo(activeNames) {
-      if (activeNames == "1") {
-        //加载客户信息
-        if (this.inputCustomerID != null) {
+      if (this.inputCustomerID == "") {
+        this.$message({
+          type: "warning",
+          message: "请输入内容点击查询后再试"
+        });
+      } else {
+        if (activeNames == "1") {
+          // if (this.inputCustomerID != null) {
+          //   axios
+          //     .get(Api.getCompanyInfoUrl, {
+          //       params: {
+          //         key: this.inputCustomerID
+          //       }
+          //     })
+          //     .then(res => {
+          //       if (res.data.code == 1) {
+          //         this.customerInfoData = res.data.data;
+          //       } else {
+          //         this.$message({
+          //           type: "failed",
+          //           message: "加载失败，请重试！！"
+          //         });
+          //       }
+          //     });
+          // }
+
+          //加载客户信息
           axios
             .get(Api.getCompanyInfoUrl, {
               params: {
@@ -1088,10 +1130,26 @@ export default {
                 });
               }
             });
-        }
-      } else if (activeNames == "2") {
-        //加载联系人信息
-        if (this.inputCustomerID != null) {
+        } else if (activeNames == "2") {
+          //加载联系人信息
+          // if (this.inputCustomerID != null) {
+          //   axios
+          //     .get(Api.getContactsUrl, {
+          //       params: {
+          //         id: this.inputCustomerID
+          //       }
+          //     })
+          //     .then(res => {
+          //       if (res.data.code == 1) {
+          //         this.contactsListData = res.data.data;
+          //       } else {
+          //         this.$message({
+          //           type: "failed",
+          //           message: "加载失败，请重试！！"
+          //         });
+          //       }
+          //     });
+          // }
           axios
             .get(Api.getContactsUrl, {
               params: {
@@ -1101,6 +1159,8 @@ export default {
             .then(res => {
               if (res.data.code == 1) {
                 this.contactsListData = res.data.data;
+                console.log("this: ", this);
+                console.log("update data");
               } else {
                 this.$message({
                   type: "failed",
@@ -1108,11 +1168,27 @@ export default {
                 });
               }
             });
-        }
-      } else if (activeNames == "3") {
-        //加载历史订单信息
-        console.log(activeNames);
-        if (this.inputCustomerID != null) {
+        } else if (activeNames == "3") {
+          //加载历史订单信息
+          console.log(activeNames);
+          // if (this.inputCustomerID != null) {
+          //   axios
+          //     .get(Api.getHistoryUrl, {
+          //       params: {
+          //         id: this.inputCustomerID
+          //       }
+          //     })
+          //     .then(res => {
+          //       if (res.data.code == 1) {
+          //         this.historyOrderListData = res.data.data;
+          //       } else {
+          //         this.$message({
+          //           type: "failed",
+          //           message: "加载失败，请重试！！"
+          //         });
+          //       }
+          //     });
+          // }
           axios
             .get(Api.getHistoryUrl, {
               params: {
@@ -1129,10 +1205,26 @@ export default {
                 });
               }
             });
-        }
-      } else if (activeNames == "4") {
-        //加载交往信息
-        if (this.inputCustomerID != null) {
+        } else if (activeNames == "4") {
+          //加载交往信息
+          // if (this.inputCustomerID != null) {
+          //   axios
+          //     .get(Api.getIntercourseInfoUrl, {
+          //       params: {
+          //         id: this.inputCustomerID
+          //       }
+          //     })
+          //     .then(res => {
+          //       if (res.data.code == 1) {
+          //         this.intercourseListData = res.data.data;
+          //       } else {
+          //         this.$message({
+          //           type: "failed",
+          //           message: "加载失败，请重试！！"
+          //         });
+          //       }
+          //     });
+          // }
           axios
             .get(Api.getIntercourseInfoUrl, {
               params: {
@@ -1156,7 +1248,8 @@ export default {
     // “新建客户”点击事件
     createNewCustomer() {
       this.customerInfoData = {};
-      this.$refs.create_new_customer_dialog.title = "新建客户";
+      //this.$refs.create_new_customer_dialog.title = "新建客户";
+      this.popUpCustomerDialogTitle = "新建客户";
       this.createNewCustomerDialogVisible = true;
     },
 
@@ -1164,7 +1257,8 @@ export default {
     submitCreateNewCustomerForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.$refs.create_new_customer_dialog.title == "新建客户") {
+          //if (this.$refs.create_new_customer_dialog.title == "新建客户") {
+          if (this.popUpCustomerDialogTitle == "新建客户") {
             /**
              * 创建新客户
              */
@@ -1263,7 +1357,8 @@ export default {
 
     // 客户基本信息管理------------------------------------------------------------------------------------
     editCustomerInfo() {
-      this.$refs.create_new_customer_dialog.title = "修改客户基本信息";
+      //this.$refs.create_new_customer_dialog.title = "修改客户基本信息";
+      this.popUpCustomerDialogTitle = "修改客户基本信息";
       this.createNewCustomerDialogVisible = true;
     },
 
@@ -1271,13 +1366,15 @@ export default {
     // 添加联系人
     addContacts() {
       this.createContactsFormData = {};
-      this.$refs.create_contacts_dialog.title = "创建联系人";
+      //this.$refs.create_contacts_dialog.title = "创建联系人";
+      this.popUpContactDialogTitle = "创建联系人";
       this.createContactsDialogVisible = true;
     },
 
     // 修改联系人信息
     editContactsInfo() {
-      this.$refs.create_contacts_dialog.title = "修改联系人信息";
+      //this.$refs.create_contacts_dialog.title = "修改联系人信息";
+      this.popUpContactDialogTitle = "修改联系人信息";
       this.createContactsFormData = this.currentRowOfContacts;
       this.createContactsFormData.officePhone = this.currentRowOfContacts.office_phone;
       //console.log("联系人id"+this.currentRowOfContacts.id);
@@ -1295,6 +1392,32 @@ export default {
     // 表格交往记录控制当前选中行
     handleCurrentIntercourseChange(val) {
       this.currentRowOfIntercourse = val;
+    },
+
+    // 刷新联系人列表
+    refreshContactsList() {
+      console.log("refresh: " + this.inputCustomerID);
+      if (this.inputCustomerID != "") {
+        axios
+          .get(Api.getContactsUrl, {
+            params: {
+              id: this.inputCustomerID
+            }
+          })
+          .then(res => {
+            if (res.data.code == 1) {
+              this.contactsListData = {};
+              this.contactsListData = res.data.data;
+              console.log("current => this: ", this);
+              console.log("update data");
+            } else {
+              this.$message({
+                type: "failed",
+                message: "加载失败，请重试！！"
+              });
+            }
+          });
+      }
     },
 
     // 批量删除联系人
@@ -1330,29 +1453,7 @@ export default {
             }
           });
       });
-    },
-
-    // 刷新联系人列表
-    refreshContactsList() {
-      console.log("refresh" + this.inputCustomerID);
-      if (this.inputCustomerID != null) {
-        axios
-          .get(Api.getContactsUrl, {
-            params: {
-              id: this.inputCustomerID
-            }
-          })
-          .then(res => {
-            if (res.data.code == 1) {
-              this.contactsListData = res.data.data;
-            } else {
-              this.$message({
-                type: "failed",
-                message: "加载失败，请重试！！"
-              });
-            }
-          });
-      }
+      this.refreshContactsList();
     },
 
     // 取消选择联系人
@@ -1362,10 +1463,11 @@ export default {
     },
 
     // “新建/修改联系人”对话框---------------------------------------------------
-    async submitCreateContactsForm(formName) {
+    submitCreateContactsForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.$refs.create_contacts_dialog.title == "创建联系人") {
+          // if (this.$refs.create_contacts_dialog.title == "创建联系人")
+          if (this.popUpContactDialogTitle == "创建联系人") {
             axios
               .post(
                 Api.createContactUrl,
@@ -1426,7 +1528,11 @@ export default {
         }
       }),
         this.$refs[formName].resetFields();
-      this.$options.methods.refreshContactsList();
+      // do fucking refresh
+      //this.$options.methods.refreshContactsList();
+      console.log("do fucking refresh");
+      //
+      this.refreshContactsList();
     },
     resetreateContactsForm(formName) {
       //this.$refs[formName].resetFields();
@@ -1469,15 +1575,16 @@ export default {
     // 添加交往信息
     addIntercourse() {
       this.createIntercourseFormData = {};
-      this.$refs.create_intercourse_dialog.title = "创建交往信息记录";
-
+      //this.$refs.create_intercourse_dialog.title = "创建交往信息记录";
+      this.popUpTradeDialogTitle = "创建交往信息记录";
       this.createIntercourseDialogVisible = true;
     },
 
     // 修改交往信息
     editIntercourseInfo() {
       //console.log(this.currentRowOfIntercourse.trd_id);
-      this.$refs.create_intercourse_dialog.title = "修改交往信息记录";
+      //this.$refs.create_intercourse_dialog.title = "修改交往信息记录";
+      this.popUpTradeDialogTitle = "修改交往信息记录";
       this.createIntercourseFormData = this.currentRowOfIntercourse;
       this.createIntercourseDialogVisible = true;
     },
@@ -1549,9 +1656,8 @@ export default {
     async submitCreateIntercourseForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (
-            this.$refs.create_intercourse_dialog.title == "创建交往信息记录"
-          ) {
+          //if (this.$refs.create_intercourse_dialog.title == "创建交往信息记录")
+          if (this.popUpTradeDialogTitle == "创建交往信息记录") {
             console.log("创建交往记录");
             axios
               .post(

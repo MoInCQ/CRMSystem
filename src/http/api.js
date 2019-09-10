@@ -1,4 +1,5 @@
-const rootUrl = "http://192.168.100.151:8080";
+//const rootUrl = "http://192.168.100.151:8080";
+const rootUrl = "http://localhost:8080";
 
 const loginUrl = rootUrl + "/crms/auth/login";
 
@@ -45,9 +46,9 @@ const deleteContactUrl = rootUrl + "/crms/client/contact/delete";
 
 const getHistoryUrl = rootUrl + "/crms/client/indent/list";
 
-const getHistoryDetailUrl = rootUrl +"/crms/client/indent";
+const getHistoryDetailUrl = rootUrl + "/crms/client/indent";
 
-const getIntercourseInfoUrl = rootUrl +"/crms/client/trades";
+const getIntercourseInfoUrl = rootUrl + "/crms/client/trades";
 
 const createIntercourseDetailsUrl = rootUrl + "/crms/client/trade";
 
@@ -100,7 +101,6 @@ export default {
   getHistoryUrl,
   getHistoryDetailUrl,
   getIntercourseInfoUrl,
-  createIntercourseDetailsUrl,
   updateIntercourseDetailsUrl,
   deleteInterCourseUrl,
   getAndUpdateCustomerLoseUrl,
@@ -111,5 +111,5 @@ export default {
   getProductsUrl,
   getStocksUrl,
   consoleUrl,
-  updateServiceUrl,
+  updateServiceUrl
 };

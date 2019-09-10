@@ -238,11 +238,11 @@
   </div>
 </template>
 
-
 <script>
 import axios from "axios";
 import qs from "qs";
 import Api from "../http/api";
+import { async } from "q";
 axios.defaults.withCredentials = true;
 export default {
   data() {
@@ -310,35 +310,8 @@ export default {
       }
     };
   },
-
   methods: {
-    // 查询框-------------------------------------------------------
-    async selectByPrimaryKey() {
-      axios
-        .get(Api.getCurrentCompanyOpportunityUrl, {
-          params: {
-            id: this.selectKey.value
-          }
-        })
-        .then(res => {
-          if (res.data.code == 1) {
-            this.marketingOpportunityInfo = res.data.data;
-            this.currentRowStaffId = res.data.data.assigned_to_id;
-            this.probability = res.data.data.probability;
-            this.appointedTime = res.data.data.appointed_time;
-          } else {
-            this.$message({
-              type: "failed",
-              message: "加载失败，请重试！！"
-            });
-          }
-        });
-      //查看当前营销机会是否含有计划项
-      this.$options.methods.getPlans(this.selectKey.value).bind(this)();
-      this.$options.methods.refreshList();
-    },
-
-    async getPlans(selectKey) {
+    getPlans: async function(selectKey) {
       axios
         .get(Api.getPlansUrl, {
           params: {
@@ -412,6 +385,48 @@ export default {
       this.currentRow = val;
     },
 
+    // // 刷新列表
+    // refreshList() {
+    //   axios
+    //     .get(Api.getMarketingOpportunityUrl, {
+    //       params: {
+    //         type: "all"
+    //       }
+    //     })
+    //     .then(res => {
+    //       if (res.data.code == 1) {
+    //         console.log("内部的refresh");
+    //         this.marketingOpportunityListData = res.data.data;
+    //       } else {
+    //         this.$message({
+    //           type: "failed",
+    //           message: "拉取失败，请重试！！"
+    //         });
+    //       }
+    //     });
+    // },
+
+    // 刷新列表
+    refreshList: async function() {
+      axios
+        .get(Api.getPlansUrl, {
+          params: {
+            id: this.selectKey.value
+          }
+        })
+        .then(res => {
+          if (res.data.code == 1) {
+            console.log("刷新内部！");
+            this.customerDevelopmentPlanListData = res.data.data;
+          } else {
+            this.$message({
+              type: "failed",
+              message: "编号填写错误！！"
+            });
+          }
+        });
+    },
+
     // 批量删除计划
     deleteInBatches() {
       this.selectedPlanOpprtunity = this.$refs.customer_development_plan_info_list.selection;
@@ -445,48 +460,41 @@ export default {
             }
           });
       });
+      // do refresh
+      this.refreshList();
     },
 
-    // 刷新列表
-    refreshList() {
+    // 查询框-------------------------------------------------------
+    selectByPrimaryKey: async function() {
       axios
-        .get(Api.getMarketingOpportunityUrl, {
-          params: {
-            type: "all"
-          }
-        })
-        .then(res => {
-          if (res.data.code == 1) {
-            console.log("内部的refresh");
-            this.marketingOpportunityListData = res.data.data;
-          } else {
-            this.$message({
-              type: "failed",
-              message: "拉取失败，请重试！！"
-            });
-          }
-        });
-    },
-
-    // 刷新列表
-    refreshList() {
-      axios
-        .get(Api.getPlansUrl, {
+        .get(Api.getCurrentCompanyOpportunityUrl, {
           params: {
             id: this.selectKey.value
           }
         })
         .then(res => {
           if (res.data.code == 1) {
-            console.log("刷新内部！");
-            this.customerDevelopmentPlanListData = res.data.data;
+            this.marketingOpportunityInfo = res.data.data;
+            this.currentRowStaffId = res.data.data.assigned_to_id;
+            this.probability = res.data.data.probability;
+            this.appointedTime = res.data.data.appointed_time;
           } else {
             this.$message({
               type: "failed",
-              message: "编号填写错误！！"
+              message: "加载失败，请重试！！"
             });
           }
         });
+      //查看当前营销机会是否含有计划项
+      // this.$options.methods.getPlans(this.selectKey.value).bind(this)();
+
+      // this.$options.methods.refreshList().bind(this)();
+
+      // this.$options.methods.getPlans(this.selectKey.value);
+      // this.$options.methods.refreshList();
+      // 均定义在此方法之前
+      this.getPlans(this.selectKey.value);
+      this.refreshList();
     },
 
     // 取消选择
