@@ -44,19 +44,19 @@
         >
           <el-table-column type="index" label="序号" align="center"></el-table-column>
 
-          <el-table-column property="number" label="编号" align="center"></el-table-column>
+          <el-table-column property="id" label="编号" align="center"></el-table-column>
 
           <el-table-column property="name" label="名称" align="center"></el-table-column>
 
-          <el-table-column property="type" label="型号" align="center"></el-table-column>
+          <el-table-column property="model" label="型号" align="center"></el-table-column>
 
-          <el-table-column property="rank" label="等级/批次" align="center"></el-table-column>
+          <el-table-column property="batch" label="等级/批次" align="center"></el-table-column>
 
           <el-table-column property="unit" label="单位" align="center"></el-table-column>
 
-          <el-table-column property="unitPrice" label="单价（元）" align="center"></el-table-column>
+          <el-table-column property="price" label="单价（元）" align="center"></el-table-column>
 
-          <el-table-column property="remark" label="备注" align="center"></el-table-column>
+          <el-table-column property="note" label="备注" align="center"></el-table-column>
         </el-table>
       </el-card>
     </el-row>
@@ -64,6 +64,11 @@
 </template>
 
 <script>
+
+import axios from "axios";
+import qs from "qs";
+import Api from "../http/api";
+axios.defaults.withCredentials = true;
 export default {
   data() {
     return {
@@ -75,58 +80,94 @@ export default {
 
       productListData: [
         {
-          number: "425252",
-          name: "幸福牌电视机",
-          type: "818FFT",
-          rank: "2388EA03",
-          unit: "台",
-          unitPrice: 7500,
-          remark: "代生产"
+          id: "",
+          name: "",
+          model: "",
+          batch: "",
+          unit: "",
+          price: null,
+          note: ""
         },
-        {
-          number: "425252",
-          name: "幸福牌电视机",
-          type: "818FFT",
-          rank: "2388EA03",
-          unit: "台",
-          unitPrice: 7500,
-          remark: "代生产"
-        },
-        {
-          number: "425252",
-          name: "幸福牌电视机",
-          type: "818FFT",
-          rank: "2388EA03",
-          unit: "台",
-          unitPrice: 7500,
-          remark: "代生产"
-        },
-        {
-          number: "425252",
-          name: "幸福牌电视机",
-          type: "818FFT",
-          rank: "2388EA03",
-          unit: "台",
-          unitPrice: 7500,
-          remark: "代生产"
-        },
-        {
-          number: "425252",
-          name: "幸福牌电视机",
-          type: "818FFT",
-          rank: "2388EA03",
-          unit: "台",
-          unitPrice: 7500,
-          remark: "代生产"
-        }
+       
       ]
     };
+  },
+
+  mounted:function(){
+    axios
+      .get(Api.getProductsUrl)
+      .then(res => {
+        if (res.data.code == 1) {
+          this.productListData = res.data.data;
+        } else {
+          this.$message({
+            type: "failed",
+            message: "获取失败，请重试！！"
+          });
+        }
+      });
   },
 
   methods: {
     // 查询框-------------------------------------------------------
     selectByPrimaryKey(selectKey) {
-      console.log(selectKey);
+      if(this.selectKey.type=="名称"&&this.selectKey.value!=null){
+        axios
+      .get(Api.getProductsUrl,{
+        params:{
+          name:this.selectKey.value
+        }
+      })
+      .then(res => {
+        if (res.data.code == 1) {
+          this.productListData = res.data.data;
+        } else {
+          this.$message({
+            type: "failed",
+            message: "获取失败，请重试！！"
+          });
+        }
+      });
+      }else if(this.selectKey.type=="型号"&&this.selectKey.value!=null){
+        axios
+      .get(Api.getProductsUrl,{
+        params:{
+          model:this.selectKey.value
+        }
+      })
+      .then(res => {
+        if (res.data.code == 1) {
+          this.productListData = res.data.data;
+        } else {
+          this.$message({
+            type: "failed",
+            message: "获取失败，请重试！！"
+          });
+        }
+      });
+      }else if(this.selectKey.type=="批次"&&this.selectKey.value!=null){
+        axios
+      .get(Api.getProductsUrl,{
+        params:{
+          batch:this.selectKey.value
+        }
+      })
+      .then(res => {
+        if (res.data.code == 1) {
+          this.productListData = res.data.data;
+        } else {
+          this.$message({
+            type: "failed",
+            message: "获取失败，请重试！！"
+          });
+        }
+      });
+      }else{
+        this.$message({
+            type: "failed",
+            message: "请选择查询类型并且输入内容！！"
+          });
+      }
     }
   }
 };

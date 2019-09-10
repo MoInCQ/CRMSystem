@@ -128,7 +128,7 @@ export default {
         }
     },
     legend: {
-        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+        data:['战略合作伙伴','合作伙伴','大客户','重点开发客户','普通客户']
     },
     toolbox: {
         feature: {
@@ -155,35 +155,35 @@ export default {
     ],
     series : [
         {
-            name:'邮件营销',
+            name:'战略合作伙伴',
             type:'line',
             stack: '总量',
             areaStyle: {},
-            data:[120, 132, 101, 134, 90, 230, 210]
+            data:[50, 60, 66, 70, 70, 89, 90]
         },
         {
-            name:'联盟广告',
+            name:'合作伙伴',
             type:'line',
             stack: '总量',
             areaStyle: {},
-            data:[220, 182, 191, 234, 290, 330, 310]
+            data:[40, 50, 60, 61, 63, 70, 90]
         },
         {
-            name:'视频广告',
+            name:'大客户',
             type:'line',
             stack: '总量',
             areaStyle: {},
-            data:[150, 232, 201, 154, 190, 330, 410]
+            data:[20, 35, 55, 70, 80, 90, 100]
         },
         {
-            name:'直接访问',
+            name:'重点开发客户',
             type:'line',
             stack: '总量',
             areaStyle: {normal: {}},
-            data:[320, 332, 301, 334, 390, 330, 320]
+            data:[60, 70, 80, 90, 100, 120, 140]
         },
         {
-            name:'搜索引擎',
+            name:'普通客户',
             type:'line',
             stack: '总量',
             label: {
@@ -193,7 +193,7 @@ export default {
                 }
             },
             areaStyle: {normal: {}},
-            data:[820, 932, 901, 934, 1290, 1330, 1320]
+            data:[120, 110, 125, 90, 110, 130, 150]
         }
     ]
       });

@@ -223,7 +223,7 @@ export default {
       ],
       currentRow: "",
       //当前员工营销服务对应的ID
-      currentRowStaffId:"",
+      currentRowStaffId: "",
 
       // 查询类型
       selectKey: {
@@ -233,6 +233,10 @@ export default {
 
       // “创建营销”弹出框是否可见
       dialogFormVisible: false,
+
+      selectedMarketOpprtunity: [],
+
+      registrationInfoListData: [],
 
       // "创建营销"表单（修改字段名时主义将“rules”的字段名一起修改）
       creatingMarketingOpportunityForm: {
@@ -266,17 +270,20 @@ export default {
           { type: "number", message: "几率值必须为数字(%)" }
         ],
         profile: [{ required: true, message: "请填写概要", trigger: "blur" }],
-        contacts: [
+        contactName: [
           { required: true, message: "请填写联系人", trigger: "blur" }
         ],
-        contactsTel: [
+        contactTel: [
           { required: true, message: "请填写联系人电话", trigger: "blur" },
           { length: 11, type: "number", message: "联系方式必须为11位数字" }
         ],
         note: [{ required: true, message: "请填写机会描述", trigger: "blur" }],
         refEpeId: [
           { required: true, message: "请指派此次营销负责人", trigger: "change" }
-        ]
+        ],
+        appointedTime:[{
+          required: true, message: "请合适的指派时间", trigger: "change"
+        }]
       }
     };
   },
@@ -304,8 +311,7 @@ export default {
 
   methods: {
     // 查询框-------------------------------------------------------
-    selectByPrimaryKey(selectKey) {
-      //console.log("输入的内容" + this.selectKey.value);
+    selectByPrimaryKey() {
       console.log("输入的内容" + this.selectKey.type);
       //选择了概要
       if (this.selectKey.type == "keyword") {
@@ -371,52 +377,64 @@ export default {
         this.$message({});
       }
 
-      this.$options.methods.refreshList.bind(this)();
-    },
-    doClearForm(){
-      this.creatingMarketingOpportunityForm.name = "";
-      this.creatingMarketingOpportunityForm.source = "";
-      this.creatingMarketingOpportunityForm.probability = "";
-      this.creatingMarketingOpportunityForm.profile = "";
-      this.creatingMarketingOpportunityForm.contactName = "";
-      this.creatingMarketingOpportunityForm.contactTel = "";
-      this.creatingMarketingOpportunityForm.note = "";
-      this.creatingMarketingOpportunityForm.refEpeId = "";
-      this.creatingMarketingOpportunityForm.appointedTime = "";
+      //this.$options.methods.refreshList.bind(this)();
     },
 
     // 创建销售机会
     creatingMarketingOpportunity() {
-      // this.creatingMarketingOpportunityForm.name = "";
-      // this.creatingMarketingOpportunityForm.source = "";
-      // this.creatingMarketingOpportunityForm.probability = "";
-      // this.creatingMarketingOpportunityForm.profile = "";
-      // this.creatingMarketingOpportunityForm.contactName = "";
-      // this.creatingMarketingOpportunityForm.contactTel = "";
-      // this.creatingMarketingOpportunityForm.note = "";
-      // this.creatingMarketingOpportunityForm.refEpeId = "";
-      // this.creatingMarketingOpportunityForm.appointedTime = "";
-      //this.$options.methods.doClearForm();
-      //this.$('#creatingMarketingOpportunityForm').reset()
-      //Object.assign(this.$data.creatingMarketingOpportunityForm, this.$options.data())
+      this.creatingMarketingOpportunityForm = {};
       this.dialogFormVisible = true;
       this.$refs.create_marketing_opportunity_dialog.title = "创建营销机会";
-      
     },
 
     // 表格--------------------------------------------------------
     // 表格控制当前选中行
     handleCurrentChange(val) {
       this.currentRow = val;
+      this.selectedMarketOpprtunity.push(val);
       console.log("handleCurrentChange:" + this.currentRow.name);
     },
 
     // 删除收费项目
-    deleteInBatches() {},
+    deleteInBatches() {
+      this.selectedMarketOpprtunity = this.$refs.marketing_opportunity_info_list.selection;
+
+      this.selectedMarketOpprtunity.forEach(item => {
+        axios
+          .post(
+            Api.deleteMarketingOpportunityUrl,
+            qs.stringify(
+              {
+                id: item.id
+              },
+              {
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                }
+              }
+            )
+          )
+          .then(res => {
+            if (res.data.code == 1) {
+              this.$message({
+                type: "success",
+                message: "删除成功！！"
+              });
+            } else {
+              this.$message({
+                type: "failed",
+                message: "删除失败，请重试！！"
+              });
+            }
+          });
+      });
+
+      this.$options.methods.refreshList.bind(this)();
+    },
 
     // 刷新列表
     refreshList() {
-      console.log("refresh");
+      console.log("refresh！！");
       axios
         .get(Api.getMarketingOpportunityUrl, {
           params: {
@@ -425,6 +443,7 @@ export default {
         })
         .then(res => {
           if (res.data.code == 1) {
+            console.log("内部的refresh");
             this.marketingOpportunityListData = res.data.data;
           } else {
             this.$message({
@@ -444,8 +463,9 @@ export default {
     // 修改营销机会
     editMarketingOpportunity() {
       this.$refs.create_marketing_opportunity_dialog.title = "修改营销机会";
-      console.log("标题为："+this.$refs.create_marketing_opportunity_dialog.title);
-      
+      console.log(
+        "标题为：" + this.$refs.create_marketing_opportunity_dialog.title
+      );
 
       //拿到当前公司的营销机会
       axios
@@ -470,9 +490,9 @@ export default {
             this.creatingMarketingOpportunityForm.note = res.data.data.note;
             this.creatingMarketingOpportunityForm.refEpeId =
               res.data.data.assigned_to;
-              this.currentRowStaffId = res.data.data.assigned_to_id,
-            this.creatingMarketingOpportunityForm.appointedTime =
-              res.data.data.appointed_time;
+            (this.currentRowStaffId = res.data.data.assigned_to_id),
+              (this.creatingMarketingOpportunityForm.appointedTime =
+                res.data.data.appointed_time);
           } else {
             this.$message({
               type: "failed",
@@ -484,7 +504,6 @@ export default {
 
     //下拉选择前拉取指派人
     getRefEpeIds() {
-      
       axios
         .get(Api.getOurContactNameUrl, {
           params: {
@@ -495,8 +514,11 @@ export default {
           if (res.data.code == 1) {
             this.refEpeIds = res.data.data;
             //console.log(res.data.data);
-            console.log("所有指派人::"+res.data.data);
-            console.log("下拉选择指派人::"+this.creatingMarketingOpportunityForm.refEpeId);
+            console.log("所有指派人::" + res.data.data);
+            console.log(
+              "下拉选择指派人::" +
+                this.creatingMarketingOpportunityForm.refEpeId
+            );
           } else {
             this.$message({
               type: "failed",
@@ -506,98 +528,92 @@ export default {
         });
     },
     // 处理下拉选中指派人
-    handleChooseEmployee(currentSelectedID){
-      console.log("当前选中"+currentSelectedID);
+    handleChooseEmployee(currentSelectedID) {
       this.currentRowStaffId = currentSelectedID;
     },
 
     // “创建营销”弹出框-------------------------------------------------
     // 提交表单
     submitForm(formName) {
-      console.log(
-        "表单" + 
-        this.creatingMarketingOpportunityForm.source,
-        this.creatingMarketingOpportunityForm.name,
-        this.creatingMarketingOpportunityForm.probability,
-        this.creatingMarketingOpportunityForm.profile,
-        this.creatingMarketingOpportunityForm.note,
-        this.creatingMarketingOpportunityForm.refEpeId,
-        this.creatingMarketingOpportunityForm.appointedTime,
-        this.creatingMarketingOpportunityForm.contactName,
-        this.creatingMarketingOpportunityForm.contactTel
-      );
       this.$refs[formName].validate(valid => {
         if (valid) {
-           if(this.$refs.create_marketing_opportunity_dialog.title == "修改营销机会"){
-             console.log("则是修改:!!!:"+this.currentRowStaffId);
+          if (
+            this.$refs.create_marketing_opportunity_dialog.title ==
+            "修改营销机会"
+          ) {
+            console.log("则是修改:!!!:" + this.currentRowStaffId);
 
-      // //提交修改后的信息
-      axios
-        .post(
-          Api.creatingMarketingOpportunityUrl,
-          qs.stringify({
-            id: this.currentRow.id,
-            source: this.creatingMarketingOpportunityForm.source,
-            name: this.creatingMarketingOpportunityForm.name,
-            probability: this.creatingMarketingOpportunityForm.probability,
-            profile: this.creatingMarketingOpportunityForm.profile,
-            note: this.creatingMarketingOpportunityForm.note,
-            refEpeId: this.currentRowStaffId,
-            contactName: this.creatingMarketingOpportunityForm.contactName,
-            contactTel: this.creatingMarketingOpportunityForm.contactTel,
-            appointedTime: this.creatingMarketingOpportunityForm.appointedTime
-          })
-        )
-        .then(res => {
-          if (res.data.code == 1) {
-            this.$message({
-              type: "success",
-              message: "修改成功！！",
-              
-            });
+            // //提交修改后的信息
+            axios
+              .post(
+                Api.updateMarketingOpportunityUrl,
+                qs.stringify({
+                  id: this.currentRow.id,
+                  source: this.creatingMarketingOpportunityForm.source,
+                  name: this.creatingMarketingOpportunityForm.name,
+                  probability: this.creatingMarketingOpportunityForm
+                    .probability,
+                  profile: this.creatingMarketingOpportunityForm.profile,
+                  note: this.creatingMarketingOpportunityForm.note,
+                  refEpeId: this.currentRowStaffId,
+                  contactName: this.creatingMarketingOpportunityForm
+                    .contactName,
+                  contactTel: this.creatingMarketingOpportunityForm.contactTel,
+                  appointedTime: this.creatingMarketingOpportunityForm
+                    .appointedTime
+                })
+              )
+              .then(res => {
+                if (res.data.code == 1) {
+                  this.$message({
+                    type: "success",
+                    message: "修改成功！！"
+                  });
+                  this.dialogFormVisible = false;
+                } else {
+                  this.$message({
+                    type: "failed",
+                    message: "修改失败，请重试！！"
+                  });
+                }
+              });
           } else {
-            this.$message({
-              type: "failed",
-              message: "修改失败，请重试！！"
-            });
-          }
-        });
-          }else{
             console.log("则是创建");
-            // axios
-          //   .post(
-          //     Api.creatingMarketingOpportunityUrl,
-          //     qs.stringify({
-          //       source: this.creatingMarketingOpportunityForm.source,
-          //       name: this.creatingMarketingOpportunityForm.name,
-          //       probability: this.creatingMarketingOpportunityForm.probability,
-          //       profile: this.creatingMarketingOpportunityForm.profile,
-          //       note: this.creatingMarketingOpportunityForm.note,
-          //       refEpeId: this.creatingMarketingOpportunityForm.refEpeId,
-          //       contactName: this.creatingMarketingOpportunityForm.contactName,
-          //       contactTel: this.creatingMarketingOpportunityForm.contactTel,
-          //       appointedTime: this.creatingMarketingOpportunityForm
-          //         .appointedTime
-          //     })
-          //   )
-          //   .then(res => {
-          //     if (res.data.code == 1) {
-          //       this.$message({
-          //         type: "success",
-          //         message: "创建成功！！"
-          //       });
-          //     } else {
-          //       this.$message({
-          //         type: "failed",
-          //         message: "创建失败，请重试！！"
-          //       });
-          //     }
-          //   });
+            axios
+              .post(
+                Api.creatingMarketingOpportunityUrl,
+                qs.stringify({
+                  source: this.creatingMarketingOpportunityForm.source,
+                  name: this.creatingMarketingOpportunityForm.name,
+                  probability: this.creatingMarketingOpportunityForm
+                    .probability,
+                  profile: this.creatingMarketingOpportunityForm.profile,
+                  note: this.creatingMarketingOpportunityForm.note,
+                  refEpeId: this.creatingMarketingOpportunityForm.refEpeId,
+                  contactName: this.creatingMarketingOpportunityForm
+                    .contactName,
+                  contactTel: this.creatingMarketingOpportunityForm.contactTel,
+                  appointedTime: this.creatingMarketingOpportunityForm
+                    .appointedTime
+                })
+              )
+              .then(res => {
+                if (res.data.code == 1) {
+                  this.$message({
+                    type: "success",
+                    message: "创建成功！！"
+                  });
+                  this.dialogFormVisible = false;
+                } else {
+                  this.$message({
+                    type: "failed",
+                    message: "创建失败，请重试！！"
+                  });
+                }
+              });
           }
-          // 提交成功
-          this.dialogFormVisible = false;
-          
           //重新拉取最新的营销机会
+          console.log("提交数据成功，下拉刷新！！");
           this.$options.methods.refreshList();
         } else {
           // 无效提交
@@ -607,10 +623,8 @@ export default {
       });
     },
     // 重置表单
-    resetForm(formName) {
-      
-      //this.$refs[formName].resetFields();
-      //this.$options.methods.doClearForm();
+    resetForm() {
+      this.creatingMarketingOpportunityForm = {};
     }
   }
 };

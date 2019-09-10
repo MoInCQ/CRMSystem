@@ -4,7 +4,6 @@ import router from "./router";
 import store from "./store";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import {get,formPost,urlencodedPost} from './http/http'
 
 // 引入Echarts
 import echarts from 'echarts'
@@ -13,10 +12,6 @@ Vue.prototype.$echarts = echarts
 
 
 Vue.use(ElementUI);
-
-//定义全局变量
-Vue.prototype.$post=formPost;
-Vue.prototype.$get=urlencodedPost;
 Vue.config.productionTip = false;
 
 new Vue({

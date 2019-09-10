@@ -243,7 +243,6 @@
 import axios from "axios";
 import qs from "qs";
 import Api from "../http/api";
-import Http from "../http/http";
 axios.defaults.withCredentials = true;
 export default {
   data() {
@@ -267,6 +266,8 @@ export default {
         create_time: ""
       },
 
+      selectedPlanOpprtunity: [],
+
       //表格内容
       customerDevelopmentPlanListData: [
         {
@@ -277,9 +278,9 @@ export default {
         }
       ],
       currentRow: "",
-      probability:"",
-      currentRowStaffId:"",
-      appointedTime:"",
+      probability: "",
+      currentRowStaffId: "",
+      appointedTime: "",
 
       // 对话框可见性
       addPlanDialogVisible: false,
@@ -299,7 +300,9 @@ export default {
             trigger: "change"
           }
         ],
-        content: [{ required: true, message: "请填写计划项内容", trigger: "blur" }]
+        content: [
+          { required: true, message: "请填写计划项内容", trigger: "blur" }
+        ]
       },
 
       editPlanFormData: {
@@ -310,39 +313,7 @@ export default {
 
   methods: {
     // 查询框-------------------------------------------------------
-    selectByPrimaryKey(selectKey) {
-      //查询当前的营销机会
-      //以及得到
-      // axios
-      //   .all([
-      //     axios.get(Api.getCurrentCompanyOpportunityUrl, {
-      //     params: {
-      //       id: this.selectKey.value
-      //     }
-      //   }),
-
-      //     axios.get(Api.getPlansUrl, {
-      //     params: {
-      //       id: this.selectKey.value
-      //     }
-      //   })
-      //   ])
-      //   .then(
-      //     axios.spread(function(opportunityResp, plansResp) {
-      //       // 上面两个请求都完成后，才执行这个回调方法
-      //       if(opportunityResp.data.code == 1&& plansResp.data.code==1){
-
-      //         this.customerDevelopmentPlanListData = plansResp.data.data;
-      //         console.log("marketingOpportunityInfo::",opportunityResp.data.data);
-      //         this.marketingOpportunityInfo.name = opportunityResp.data.data.name;
-      //       }else {
-      //         this.$message({
-      //           type:"failed",
-      //           message:"信息获取失败"
-      //         })
-      //       }
-      //     })
-      //   );
+    async selectByPrimaryKey() {
       axios
         .get(Api.getCurrentCompanyOpportunityUrl, {
           params: {
@@ -363,10 +334,11 @@ export default {
           }
         });
       //查看当前营销机会是否含有计划项
-      this.$options.methods.getPlans(this.selectKey.value);
+      this.$options.methods.getPlans(this.selectKey.value).bind(this)();
+      this.$options.methods.refreshList();
     },
 
-    getPlans(selectKey) {
+    async getPlans(selectKey) {
       axios
         .get(Api.getPlansUrl, {
           params: {
@@ -376,10 +348,6 @@ export default {
         .then(res => {
           if (res.data.code == 1) {
             this.customerDevelopmentPlanListData = res.data.data;
-            this.$options.methods.refreshList();
-            console.log(
-              "当前计划项：" + this.customerDevelopmentPlanListData[0].id
-            );
           } else {
             this.$message({
               type: "failed",
@@ -387,15 +355,13 @@ export default {
             });
           }
         });
-
-      
     },
 
     // 表单----------------------------------------------------------
     // 提交表单点击事件
-    completeDevelopment() {
+    async completeDevelopment() {
       //修改此次营销机会的状态
-       axios
+      axios
         .post(
           Api.updateMarketingOpportunityUrl,
           qs.stringify({
@@ -409,15 +375,14 @@ export default {
             probability: this.probability,
             refEpeId: this.currentRowStaffId,
             appointedTime: this.appointedTime,
-            status:"已完成"
+            status: "已完成"
           })
         )
         .then(res => {
           if (res.data.code == 1) {
             this.$message({
               type: "success",
-              message: "修改成功！！",
-              
+              message: "修改成功！！"
             });
           } else {
             this.$message({
@@ -431,6 +396,7 @@ export default {
     // 表格---------------------------------------------------------
     // 添加计划
     addPlan() {
+      this.addPlanFormData = {};
       this.addPlanDialogVisible = true;
     },
 
@@ -438,7 +404,7 @@ export default {
     editPlan() {
       this.editPlanDialogVisible = true;
       console.log(this.currentRow);
-      this.editPlanFormData.status  = this.currentRow.status;
+      this.editPlanFormData.status = this.currentRow.status;
     },
 
     // 表格控制当前选中行
@@ -447,7 +413,60 @@ export default {
     },
 
     // 批量删除计划
-    deleteInBatches() {},
+    deleteInBatches() {
+      this.selectedPlanOpprtunity = this.$refs.customer_development_plan_info_list.selection;
+
+      this.selectedPlanOpprtunity.forEach(item => {
+        axios
+          .post(
+            Api.deletePlanOpportunityUrl,
+            qs.stringify(
+              {
+                id: item.id
+              },
+              {
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                }
+              }
+            )
+          )
+          .then(res => {
+            if (res.data.code == 1) {
+              this.$message({
+                type: "success",
+                message: "删除成功！！"
+              });
+            } else {
+              this.$message({
+                type: "failed",
+                message: "删除失败，请重试！！"
+              });
+            }
+          });
+      });
+    },
+
+    // 刷新列表
+    refreshList() {
+      axios
+        .get(Api.getMarketingOpportunityUrl, {
+          params: {
+            type: "all"
+          }
+        })
+        .then(res => {
+          if (res.data.code == 1) {
+            console.log("内部的refresh");
+            this.marketingOpportunityListData = res.data.data;
+          } else {
+            this.$message({
+              type: "failed",
+              message: "拉取失败，请重试！！"
+            });
+          }
+        });
+    },
 
     // 刷新列表
     refreshList() {
@@ -459,6 +478,7 @@ export default {
         })
         .then(res => {
           if (res.data.code == 1) {
+            console.log("刷新内部！");
             this.customerDevelopmentPlanListData = res.data.data;
           } else {
             this.$message({
@@ -476,41 +496,41 @@ export default {
     },
 
     // "添加计划"对话框----------------------------------------------------
-    submitAddPlanForm(formName) {
+    async submitAddPlanForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // 提交成功
           if (this.selectKey.value == "") {
-        this.$message({
-          type: "failed",
-          message: "请输入营销编号！！"
-        });
-      } else {
-        axios
-          .post(
-            Api.createPlansUrl,
-            qs.stringify({
-              chanceId: this.selectKey.value,
-              date: this.addPlanFormData.date,
-              content: this.addPlanFormData.content
-            })
-          )
-          .then(res => {
-            if (res.data.code == 1) {
-              this.$options.methods.refreshList();
-              this.$message({
-                type: "success",
-                message: "添加成功！！"
+            this.$message({
+              type: "failed",
+              message: "请输入营销编号！！"
+            });
+          } else {
+            axios
+              .post(
+                Api.createPlansUrl,
+                qs.stringify({
+                  chanceId: this.selectKey.value,
+                  date: this.addPlanFormData.date,
+                  content: this.addPlanFormData.content
+                })
+              )
+              .then(res => {
+                if (res.data.code == 1) {
+                  this.$message({
+                    type: "success",
+                    message: "添加成功！！"
+                  });
+                  this.addPlanDialogVisible = false;
+                } else {
+                  this.$message({
+                    type: "failed",
+                    message: "添加失败，请重试！！"
+                  });
+                }
               });
-            } else {
-              this.$message({
-                type: "failed",
-                message: "添加失败，请重试！！"
-              });
-            }
-          });
-      }
-          this.addPlanDialogVisible = false;
+            this.$options.methods.refreshList();
+          }
           this.$refs[formName].resetFields();
         } else {
           // 无效提交
@@ -521,43 +541,45 @@ export default {
     },
     resetAddPlanForm(formName) {
       this.$refs[formName].resetFields();
+      this.addPlanFormData = {};
     },
 
     //  "编辑计划执行情况"对话框----------------------------------------------
-    submitEditPlanForm(formName) {
+    async submitEditPlanForm(formName) {
       axios
-          .post(
-            Api.updatePlanUrl,
-            qs.stringify({
+        .post(
+          Api.updatePlanUrl,
+          qs.stringify(
+            {
               id: this.currentRow.id,
-              status: this.editPlanFormData.status         
+              status: this.editPlanFormData.status
             },
             {
-                  headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                  }
-                }
-            )
-          )
-          .then(res => {
-            if (res.data.code == 1) {
-              this.$options.methods.refreshList();
-              this.$message({
-                type: "success",
-                message: "添加c成功！！"
-              });
-            } else {
-              this.$message({
-                type: "failed",
-                message: "添加失败，请重试！！"
-              });
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              }
             }
-          });
-      this.editPlanDialogVisible = false;
-      this.$refs[formName].resetFields();
+          )
+        )
+        .then(res => {
+          if (res.data.code == 1) {
+            this.$message({
+              type: "success",
+              message: "添加成功！！"
+            });
+            this.editPlanDialogVisible = false;
+          } else {
+            this.$message({
+              type: "failed",
+              message: "添加失败，请重试！！"
+            });
+          }
+        });
+      this.$options.methods.refreshList();
     },
     resetEditPlanForm(formName) {
       this.$refs[formName].resetFields();
+      this.editPlanFormData = {};
     }
   }
 };

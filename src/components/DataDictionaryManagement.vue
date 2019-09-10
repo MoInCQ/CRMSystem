@@ -3,17 +3,8 @@
     <!-- 查询框 -->
     <el-row style="margin: 0px 0px 30px 0px">
       <el-col :span="18">
-        <el-input placeholder="请输入内容" v-model="selectKey.value" style="background-color: #fff;">
-          <el-select
-            v-model="selectKey.type"
-            slot="prepend"
-            placeholder="查询类型"
-            style="width: 130px; "
-          >
-            <el-option label="类别" value="类别"></el-option>
-            <el-option label="条目" value="条目"></el-option>
-            <el-option label="值" value="值"></el-option>
-          </el-select>
+        <el-input placeholder="请输入内容" v-model="search" style="background-color: #fff;">
+          <el-select slot="prepend" placeholder="类别" style="width: 130px; " disabled></el-select>
           <el-button slot="append" icon="el-icon-search" @click="selectByPrimaryKey(selectKey)">查询</el-button>
         </el-input>
       </el-col>
@@ -31,48 +22,38 @@
               >数据字典列表</div>
             </el-col>
 
-            <el-col :span="2">
+            <!-- <el-col :span="2">
               <el-button
                 style="float: right; padding: 3px 0 ; height:40px; text-align:center"
                 type="text"
                 icon="el-icon-plus"
                 @click="addDictionary()"
               >创建条目</el-button>
-            </el-col>
+            </el-col> -->
 
-            <el-col :span="2">
-              <el-button
-                style="float: right; padding: 3px 0 ; height:40px; text-align:center"
-                type="text"
-                icon="el-icon-refresh"
-                @click="refreshDictionaryList()"
-              >刷新列表</el-button>
-            </el-col>
-
-            <el-col :span="2">
+            <!-- <el-col :span="2">
               <el-button
                 style="float: right; padding: 3px 0 ; height:40px; text-align:center"
                 type="text"
                 icon="el-icon-delete"
                 @click="deleteDictionaryInBatches()"
               >批量删除</el-button>
-            </el-col>
+            </el-col> -->
 
-            <el-col :span="2">
+            <!-- <el-col :span="2">
               <el-button
                 style="float: right; padding: 3px 0 ; height:40px; text-align:center"
                 type="text"
                 icon="el-icon-close"
                 @click="toggleDictionarySelection()"
               >取消选择</el-button>
-            </el-col>
+            </el-col> -->
           </el-row>
         </div>
 
-        <!-- 列表 -->
         <el-table
           ref="dictionary_List"
-          :data="dictionaryListData"
+          :data="tables"
           highlight-current-row
           stripe
           border
@@ -150,43 +131,45 @@ export default {
       // “数据字典”表格数据
       dictionaryListData: [
         {
-          number: "423424",
-          type: "企业客户等级",
+          number: "4234ar234sf23224",
+          type: "大型企业",
           title: "普通客户",
-          value: "1",
+          value: "5",
           isEditable: "是"
         },
         {
-          number: "423424",
-          type: "企业客户等级",
-          title: "普通客户",
-          value: "1",
+          number: "12784234234224dfd",
+          type: "上市公司",
+          title: "合作伙伴",
+          value: "10",
           isEditable: "是"
         },
         {
-          number: "423424",
-          type: "企业客户等级",
-          title: "普通客户",
-          value: "1",
+          number: "90876234242324234t",
+          type: "私企",
+          title: "高级客户",
+          value: "8",
           isEditable: "是"
         },
         {
-          number: "423424",
-          type: "企业客户等级",
-          title: "普通客户",
-          value: "1",
+          number: "654943828203047596",
+          type: "央视企业",
+          title: "大客户",
+          value: "20",
           isEditable: "是"
         },
         {
-          number: "423424",
+          number: "243649303646484930",
           type: "企业客户等级",
           title: "普通客户",
-          value: "1",
+          value: "40",
           isEditable: "是"
         }
       ],
       currentRowOfDictionary: "",
-
+      currrentIndex: 0,
+      Num: "",
+      search: "",
 
       // “创建/修改数据字典条目”弹出框显示控制
       createItemDialogVisible: false,
@@ -200,37 +183,66 @@ export default {
     };
   },
 
+  computed: {
+    // 模糊搜索
+    tables() {
+      const search = this.search;
+      if (search) {
+        return this.dictionaryListData.filter(data => {
+          return Object.keys(data).some(key => {
+            return (
+              String(data[key])
+                .toLowerCase()
+                .indexOf(search) > -1
+            );
+          });
+        });
+      }
+      return this.dictionaryListData;
+    }
+  },
+
   methods: {
     // 查询框-------------------------------------------------------
     selectByPrimaryKey(selectKey) {
       console.log(selectKey);
     },
 
+    MathRand() {
+      for (var i = 0; i < 18; i++) {
+        this.Num += Math.floor(Math.random() * 10);
+      }
+    },
+
     // 表格相关-----------------------------------------------------
     // 添加字典
     addDictionary() {
+      this.createItemFormData = {};
       this.$refs.create_item_dialog.title = "创建字典条目";
       this.createItemDialogVisible = true;
     },
 
     // 修改联系人信息
     editDictionaryInfo() {
-      console.log(this.currentRowOfDictionary);
       this.$refs.create_item_dialog.title = "修改字典条目";
       this.createItemDialogVisible = true;
+      this.createItemFormData = this.currentRowOfDictionary;
     },
 
     // 表格控制当前选中行
     handleCurrentChange(val) {
       this.currentRowOfDictionary = val;
+
+      this.dictionaryListData.map((c, i) => {
+        if (c.number == val.number) {
+          this.currrentIndex = i;
+        }
+      });
     },
 
     // 批量删除联系人
-    deleteDictionaryInBatches() {},
+    deleteDictionaryInBatches() {
 
-    // 刷新联系人列表
-    refreshDictionaryList() {
-      console.log("refresh");
     },
 
     // 取消选择联系人
@@ -241,7 +253,22 @@ export default {
 
     // 提交弹出框表单
     submitCreateItemForm() {
-        this.createItemDialogVisible = false;
+      //var Num="";
+      console.log(this.$refs.create_item_dialog.title == "修改字典条目");
+      if (this.$refs.create_item_dialog.title == "修改字典条目") {
+        this.dictionaryListData[this.currrentIndex] = this.createItemFormData;
+      } else {
+        //得到编号
+        for (var i = 0; i < 18; i++) {
+          this.Num += Math.floor(Math.random() * 10);
+        }
+
+
+       
+        this.dictionaryListData[0].number = this.Num;
+        this.dictionaryListData[0] = this.createItemFormData;
+      }
+      this.createItemDialogVisible = false;
     }
   }
 };
