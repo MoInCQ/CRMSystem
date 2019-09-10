@@ -385,41 +385,6 @@ export default {
       this.currentRow = val;
     },
 
-    // 批量删除计划
-    deleteInBatches() {
-      this.selectedPlanOpprtunity = this.$refs.customer_development_plan_info_list.selection;
-
-      this.selectedPlanOpprtunity.forEach(item => {
-        axios
-          .post(
-            Api.deletePlanOpportunityUrl,
-            qs.stringify(
-              {
-                id: item.id
-              },
-              {
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded"
-                }
-              }
-            )
-          )
-          .then(res => {
-            if (res.data.code == 1) {
-              this.$message({
-                type: "success",
-                message: "删除成功！！"
-              });
-            } else {
-              this.$message({
-                type: "failed",
-                message: "删除失败，请重试！！"
-              });
-            }
-          });
-      });
-    },
-
     // // 刷新列表
     // refreshList() {
     //   axios
@@ -460,6 +425,43 @@ export default {
             });
           }
         });
+    },
+
+    // 批量删除计划
+    deleteInBatches() {
+      this.selectedPlanOpprtunity = this.$refs.customer_development_plan_info_list.selection;
+
+      this.selectedPlanOpprtunity.forEach(item => {
+        axios
+          .post(
+            Api.deletePlanOpportunityUrl,
+            qs.stringify(
+              {
+                id: item.id
+              },
+              {
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                }
+              }
+            )
+          )
+          .then(res => {
+            if (res.data.code == 1) {
+              this.$message({
+                type: "success",
+                message: "删除成功！！"
+              });
+            } else {
+              this.$message({
+                type: "failed",
+                message: "删除失败，请重试！！"
+              });
+            }
+          });
+      });
+      // do refresh
+      this.refreshList();
     },
 
     // 查询框-------------------------------------------------------

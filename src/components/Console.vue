@@ -12,15 +12,10 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar
-                      :size="avatarSize"
-                      :src="totalCustomerAmountPicUrl"
-                    ></el-avatar>
+                    <el-avatar :size="avatarSize" :src="totalCustomerAmountPicUrl"></el-avatar>
                   </el-col>
                   <el-col :span="14">
-                    <div class="card-content-text-title">
-                      {{ statistics.customer_amount }}
-                    </div>
+                    <div class="card-content-text-title">{{ statistics.customer_amount }}</div>
                     <div class="card-content-text">总客户量</div>
                   </el-col>
                 </el-row>
@@ -32,16 +27,11 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar
-                      :size="avatarSize"
-                      :src="loseCoustomerAmountPicUrl"
-                    ></el-avatar>
+                    <el-avatar :size="avatarSize" :src="loseCoustomerAmountPicUrl"></el-avatar>
                   </el-col>
 
                   <el-col :span="14">
-                    <div class="card-content-text-title">
-                      {{ statistics.lost_customer_amt }}
-                    </div>
+                    <div class="card-content-text-title">{{ statistics.lost_customer_amt }}</div>
                     <div class="card-content-text">客户流失量</div>
                   </el-col>
                 </el-row>
@@ -53,16 +43,11 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar
-                      :size="avatarSize"
-                      :src="newOrderAmountPicUrl"
-                    ></el-avatar>
+                    <el-avatar :size="avatarSize" :src="newOrderAmountPicUrl"></el-avatar>
                   </el-col>
 
                   <el-col :span="14">
-                    <div class="card-content-text-title">
-                      {{ statistics.indent_amount }}
-                    </div>
+                    <div class="card-content-text-title">{{ statistics.indent_amount }}</div>
                     <div class="card-content-text">新订单</div>
                   </el-col>
                 </el-row>
@@ -77,16 +62,11 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar
-                      :size="avatarSize"
-                      :src="developCustomerAmountPicUrl"
-                    ></el-avatar>
+                    <el-avatar :size="avatarSize" :src="developCustomerAmountPicUrl"></el-avatar>
                   </el-col>
 
                   <el-col :span="14">
-                    <div class="card-content-text-title">
-                      {{ statistics.developed_customer_amount }}
-                    </div>
+                    <div class="card-content-text-title">{{ statistics.developed_customer_amount }}</div>
                     <div class="card-content-text">客户开发量</div>
                   </el-col>
                 </el-row>
@@ -98,16 +78,11 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar
-                      :size="avatarSize"
-                      :src="feedbackAmountPicUrl"
-                    ></el-avatar>
+                    <el-avatar :size="avatarSize" :src="feedbackAmountPicUrl"></el-avatar>
                   </el-col>
 
                   <el-col :span="14">
-                    <div class="card-content-text-title">
-                      {{ statistics.service_feedback_amount }}
-                    </div>
+                    <div class="card-content-text-title">{{ statistics.service_feedback_amount }}</div>
                     <div class="card-content-text">服务反馈量</div>
                   </el-col>
                 </el-row>
@@ -119,16 +94,11 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar
-                      :size="avatarSize"
-                      :src="commodityAmountPicUrl"
-                    ></el-avatar>
+                    <el-avatar :size="avatarSize" :src="commodityAmountPicUrl"></el-avatar>
                   </el-col>
 
                   <el-col :span="14">
-                    <div class="card-content-text-title">
-                      {{ statistics.product_amount }}
-                    </div>
+                    <div class="card-content-text-title">{{ statistics.product_amount }}</div>
                     <div class="card-content-text">商品总数</div>
                   </el-col>
                 </el-row>
@@ -141,10 +111,7 @@
 
         <!-- 本周销售统计折线图 -->
         <el-row>
-          <div
-            id="lineChart"
-            :style="{ width: '450px', height: '300px' }"
-          ></div>
+          <div id="lineChart" :style="{ width: '450px', height: '300px' }"></div>
         </el-row>
       </el-col>
 
@@ -159,9 +126,7 @@
                 <el-col :span="16">
                   <div
                     style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
-                  >
-                    本周交易金额前几的客户
-                  </div>
+                  >本周交易金额前几的客户</div>
                 </el-col>
               </el-row>
             </div>
@@ -176,29 +141,13 @@
               border
               style="width: 100%"
             >
-              <el-table-column
-                type="index"
-                label="序号"
-                align="center"
-              ></el-table-column>
+              <el-table-column type="index" label="序号" align="center"></el-table-column>
 
-              <el-table-column
-                property="id"
-                label="客户编号"
-                align="center"
-              ></el-table-column>
+              <el-table-column property="id" label="客户编号" align="center"></el-table-column>
 
-              <el-table-column
-                property="name"
-                label="客户名称"
-                align="center"
-              ></el-table-column>
+              <el-table-column property="name" label="客户名称" align="center"></el-table-column>
 
-              <el-table-column
-                property="amount"
-                label="交易金额(万元)"
-                align="center"
-              ></el-table-column>
+              <el-table-column property="amount" label="交易金额(万元)" align="center"></el-table-column>
             </el-table>
           </el-card>
         </el-row>

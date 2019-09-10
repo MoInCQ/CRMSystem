@@ -3,11 +3,7 @@
     <!-- 查询框 -->
     <el-row style="margin: 0px 0px 30px 0px">
       <el-col :span="18">
-        <el-input
-          placeholder="请输入内容"
-          v-model="selectKey.value"
-          style="background-color: #fff;"
-        >
+        <el-input placeholder="请输入内容" v-model="selectKey.value" style="background-color: #fff;">
           <el-select
             v-model="selectKey.type"
             slot="prepend"
@@ -17,30 +13,19 @@
             <el-option label="客户名称" value="客户名称"></el-option>
             <el-option label="客户编号" value="客户编号"></el-option>
           </el-select>
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="selectByPrimaryKey(selectKey)"
-            >查询</el-button
-          >
+          <el-button slot="append" icon="el-icon-search" @click="selectByPrimaryKey(selectKey)">查询</el-button>
         </el-input>
       </el-col>
 
       <!-- 新建客户 -->
       <el-col :span="2" :offset="1">
-        <el-button type="primary" round @click="createNewCustomer()"
-          >新建客户</el-button
-        >
+        <el-button type="primary" round @click="createNewCustomer()">新建客户</el-button>
       </el-col>
     </el-row>
 
     <!-- 折叠面板 -->
     <el-row>
-      <el-collapse
-        v-model="collapseActiveName"
-        accordion
-        @change="getDiffrentInfo"
-      >
+      <el-collapse v-model="collapseActiveName" accordion @change="getDiffrentInfo">
         <!-- ----------------------------------------------------------------------------------------------------------------------- -->
         <!-- 客户基本信息管理 -->
         <el-collapse-item title="客户基本信息管理" name="1">
@@ -51,9 +36,7 @@
                 <el-col :span="22">
                   <div
                     style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
-                  >
-                    客户基本信息
-                  </div>
+                  >客户基本信息</div>
                 </el-col>
 
                 <el-col :span="2">
@@ -62,36 +45,25 @@
                     type="text"
                     icon="el-icon-edit"
                     @click="editCustomerInfo()"
-                    >修改客户基本信息</el-button
-                  >
+                  >修改客户基本信息</el-button>
                 </el-col>
               </el-row>
             </div>
 
             <!-- 客户基本信息表单 -->
             <el-row>
-              <el-form
-                ref="customerInfoData"
-                :model="customerInfoData"
-                label-width="100px"
-              >
+              <el-form ref="customerInfoData" :model="customerInfoData" label-width="100px">
                 <!-- 表单第一行 -->
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="客户编号">
-                      <el-input
-                        v-model="customerInfoData.id"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.id" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
 
                   <el-col :span="16">
                     <el-form-item label="客户名称" prop="name">
-                      <el-input
-                        v-model="customerInfoData.name"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.name" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -100,18 +72,12 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="地区">
-                      <el-input
-                        v-model="customerInfoData.region"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.region" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
                     <el-form-item label="客户经理">
-                      <el-input
-                        v-model="customerInfoData.manager_name"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.manager_name" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
 
@@ -136,19 +102,13 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="客户满意度">
-                      <el-rate
-                        v-model="customerInfoData.satisfaction"
-                        disabled
-                      ></el-rate>
+                      <el-rate v-model="customerInfoData.satisfaction" disabled></el-rate>
                     </el-form-item>
                   </el-col>
 
                   <el-col :span="8">
                     <el-form-item label="客户信用度">
-                      <el-rate
-                        v-model="customerInfoData.credit"
-                        disabled
-                      ></el-rate>
+                      <el-rate v-model="customerInfoData.credit" disabled></el-rate>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -159,28 +119,19 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="地址">
-                      <el-input
-                        v-model="customerInfoData.address"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.address" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
 
                   <el-col :span="8">
                     <el-form-item label="邮编">
-                      <el-input
-                        v-model="customerInfoData.zip_code"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.zip_code" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
 
                   <el-col :span="8">
                     <el-form-item label="电话">
-                      <el-input
-                        v-model="customerInfoData.phone"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.phone" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -189,19 +140,13 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="传真">
-                      <el-input
-                        v-model="customerInfoData.fax"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.fax" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
 
                   <el-col :span="16">
                     <el-form-item label="网址">
-                      <el-input
-                        v-model="customerInfoData.website"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.website" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -212,19 +157,13 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="营业执照编号">
-                      <el-input
-                        v-model="customerInfoData.license"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.license" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
 
                   <el-col :span="8">
                     <el-form-item label="法人">
-                      <el-input
-                        v-model="customerInfoData.juridical_person"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.juridical_person" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
 
@@ -253,19 +192,13 @@
 
                   <el-col :span="8">
                     <el-form-item label="地税登记号">
-                      <el-input
-                        v-model="customerInfoData.land_tax_no"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.land_tax_no" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
 
                   <el-col :span="8">
                     <el-form-item label="国税登记号">
-                      <el-input
-                        v-model="customerInfoData.state_tax_no"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.state_tax_no" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -274,19 +207,13 @@
                 <el-row>
                   <el-col :span="8">
                     <el-form-item label="开户银行">
-                      <el-input
-                        v-model="customerInfoData.bank_name"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.bank_name" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
 
                   <el-col :span="16">
                     <el-form-item label="银行账号">
-                      <el-input
-                        v-model="customerInfoData.bank_account"
-                        :disabled="true"
-                      ></el-input>
+                      <el-input v-model="customerInfoData.bank_account" :disabled="true"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -307,9 +234,7 @@
                   <el-col :span="16">
                     <div
                       style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
-                    >
-                      该公司联系人信息列表
-                    </div>
+                    >该公司联系人信息列表</div>
                   </el-col>
 
                   <el-col :span="2">
@@ -318,8 +243,7 @@
                       type="text"
                       icon="el-icon-plus"
                       @click="addContacts()"
-                      >添加联系人</el-button
-                    >
+                    >添加联系人</el-button>
                   </el-col>
 
                   <el-col :span="2">
@@ -328,8 +252,7 @@
                       type="text"
                       icon="el-icon-refresh"
                       @click="refreshContactsList()"
-                      >刷新列表</el-button
-                    >
+                    >刷新列表</el-button>
                   </el-col>
 
                   <el-col :span="2">
@@ -338,8 +261,7 @@
                       type="text"
                       icon="el-icon-delete"
                       @click="deleteContactsInBatches()"
-                      >批量删除</el-button
-                    >
+                    >批量删除</el-button>
                   </el-col>
 
                   <el-col :span="2">
@@ -348,8 +270,7 @@
                       type="text"
                       icon="el-icon-close"
                       @click="toggleContactsSelection()"
-                      >取消选择</el-button
-                    >
+                    >取消选择</el-button>
                   </el-col>
                 </el-row>
               </div>
@@ -365,68 +286,27 @@
                 @current-change="handleCurrentContactsChange"
                 style="width: 100%"
               >
-                <el-table-column
-                  fixed="left"
-                  type="selection"
-                  width="55"
-                ></el-table-column>
+                <el-table-column fixed="left" type="selection" width="55"></el-table-column>
 
-                <el-table-column
-                  type="index"
-                  label="序号"
-                  align="center"
-                ></el-table-column>
+                <el-table-column type="index" label="序号" align="center"></el-table-column>
 
-                <el-table-column
-                  property="id"
-                  label="编号"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="id" label="编号" align="center"></el-table-column>
 
-                <el-table-column
-                  property="name"
-                  label="姓名"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="name" label="姓名" align="center"></el-table-column>
 
-                <el-table-column
-                  property="sex"
-                  label="性别"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="sex" label="性别" align="center"></el-table-column>
 
-                <el-table-column
-                  property="position"
-                  label="职位"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="position" label="职位" align="center"></el-table-column>
 
-                <el-table-column
-                  property="office_phone"
-                  label="办公电话"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="office_phone" label="办公电话" align="center"></el-table-column>
 
-                <el-table-column
-                  property="tel"
-                  label="手机号"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="tel" label="手机号" align="center"></el-table-column>
 
-                <el-table-column
-                  property="note"
-                  label="备注"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="note" label="备注" align="center"></el-table-column>
 
                 <el-table-column label="修改" align="center">
                   <template>
-                    <el-button
-                      @click="editContactsInfo()"
-                      icon="el-icon-edit"
-                      circle
-                      size="small"
-                    ></el-button>
+                    <el-button @click="editContactsInfo()" icon="el-icon-edit" circle size="small"></el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -446,9 +326,7 @@
                   <el-col :span="16">
                     <div
                       style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
-                    >
-                      该公司历史订单列表
-                    </div>
+                    >该公司历史订单列表</div>
                   </el-col>
                 </el-row>
               </div>
@@ -463,35 +341,15 @@
                 @current-change="handleCurrentHistoryOrderChange"
                 style="width: 100%"
               >
-                <el-table-column
-                  type="index"
-                  label="序号"
-                  align="center"
-                ></el-table-column>
+                <el-table-column type="index" label="序号" align="center"></el-table-column>
 
-                <el-table-column
-                  property="id"
-                  label="订单编号"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="id" label="订单编号" align="center"></el-table-column>
 
-                <el-table-column
-                  property="date"
-                  label="日期"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="date" label="日期" align="center"></el-table-column>
 
-                <el-table-column
-                  property="address"
-                  label="送货地址"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="address" label="送货地址" align="center"></el-table-column>
 
-                <el-table-column
-                  property="status"
-                  label="状态"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="status" label="状态" align="center"></el-table-column>
 
                 <el-table-column label="查看详情" align="center">
                   <template>
@@ -520,9 +378,7 @@
                   <el-col :span="16">
                     <div
                       style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
-                    >
-                      与该公司交往信息列表
-                    </div>
+                    >与该公司交往信息列表</div>
                   </el-col>
 
                   <el-col :span="2">
@@ -531,8 +387,7 @@
                       type="text"
                       icon="el-icon-plus"
                       @click="addIntercourse()"
-                      >添加交往记录</el-button
-                    >
+                    >添加交往记录</el-button>
                   </el-col>
 
                   <el-col :span="2">
@@ -541,8 +396,7 @@
                       type="text"
                       icon="el-icon-refresh"
                       @click="refreshIntercourseList()"
-                      >刷新列表</el-button
-                    >
+                    >刷新列表</el-button>
                   </el-col>
 
                   <el-col :span="2">
@@ -551,8 +405,7 @@
                       type="text"
                       icon="el-icon-delete"
                       @click="deleteIntercourseInBatches()"
-                      >批量删除</el-button
-                    >
+                    >批量删除</el-button>
                   </el-col>
 
                   <el-col :span="2">
@@ -561,8 +414,7 @@
                       type="text"
                       icon="el-icon-close"
                       @click="toggleIntercourseSelection()"
-                      >取消选择</el-button
-                    >
+                    >取消选择</el-button>
                   </el-col>
                 </el-row>
               </div>
@@ -577,53 +429,21 @@
                 @current-change="handleCurrentIntercourseChange"
                 style="width: 100%"
               >
-                <el-table-column
-                  fixed="left"
-                  type="selection"
-                  width="55"
-                ></el-table-column>
+                <el-table-column fixed="left" type="selection" width="55"></el-table-column>
 
-                <el-table-column
-                  type="index"
-                  label="序号"
-                  align="center"
-                ></el-table-column>
+                <el-table-column type="index" label="序号" align="center"></el-table-column>
 
-                <el-table-column
-                  property="trd_id"
-                  label="编号"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="trd_id" label="编号" align="center"></el-table-column>
 
-                <el-table-column
-                  property="trd_last_modified_time"
-                  label="时间"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="trd_last_modified_time" label="时间" align="center"></el-table-column>
 
-                <el-table-column
-                  property="address"
-                  label="地点"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="address" label="地点" align="center"></el-table-column>
 
-                <el-table-column
-                  property="summary"
-                  label="概要"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="summary" label="概要" align="center"></el-table-column>
 
-                <el-table-column
-                  property="detail"
-                  label="详细信息"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="detail" label="详细信息" align="center"></el-table-column>
 
-                <el-table-column
-                  property="note"
-                  label="备注"
-                  align="center"
-                ></el-table-column>
+                <el-table-column property="note" label="备注" align="center"></el-table-column>
 
                 <el-table-column label="修改" align="center">
                   <template>
@@ -646,6 +466,7 @@
     <el-dialog
       ref="create_new_customer_dialog"
       :visible.sync="createNewCustomerDialogVisible"
+      :title="popUpCustomerDialogTitle"
     >
       <el-form
         ref="customerInfoData"
@@ -657,11 +478,7 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="客户编号">
-              <el-input
-                v-model="customerInfoData.id"
-                :disabled="true"
-                placeholder="自动分配"
-              ></el-input>
+              <el-input v-model="customerInfoData.id" :disabled="true" placeholder="自动分配"></el-input>
             </el-form-item>
           </el-col>
 
@@ -782,10 +599,7 @@
 
           <el-col :span="8">
             <el-form-item label="注册资金" prop="registered_capital">
-              <el-input
-                v-model="customerInfoData.registered_capital"
-                placeholder="（万元）"
-              ></el-input>
+              <el-input v-model="customerInfoData.registered_capital" placeholder="（万元）"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -794,10 +608,7 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="年营业额" prop="revenue">
-              <el-input
-                v-model="customerInfoData.revenue"
-                placeholder="（万元）"
-              ></el-input>
+              <el-input v-model="customerInfoData.revenue" placeholder="（万元）"></el-input>
             </el-form-item>
           </el-col>
 
@@ -836,8 +647,7 @@
               <el-button
                 type="primary"
                 @click="submitCreateNewCustomerForm('customerInfoData')"
-                >确定提交</el-button
-              >
+              >确定提交</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -848,6 +658,7 @@
     <el-dialog
       ref="create_contacts_dialog"
       :visible.sync="createContactsDialogVisible"
+      :title="popUpContactDialogTitle"
     >
       <el-form
         :model="createContactsFormData"
@@ -889,14 +700,10 @@
               <el-button
                 type="primary"
                 @click="submitCreateContactsForm('createContactsFormData')"
-                >确定提交</el-button
-              >
+              >确定提交</el-button>
             </el-col>
             <el-col :span="4" :offset="1">
-              <el-button
-                @click="resetreateContactsForm('createContactsFormData')"
-                >重置表单</el-button
-              >
+              <el-button @click="resetreateContactsForm('createContactsFormData')">重置表单</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -916,38 +723,23 @@
         label-width="100px"
       >
         <el-form-item label="订单编号" prop="id">
-          <el-input
-            v-model="historyOrderDetailsFormData.id"
-            :disabled="true"
-          ></el-input>
+          <el-input v-model="historyOrderDetailsFormData.id" :disabled="true"></el-input>
         </el-form-item>
 
         <el-form-item label="日期" prop="date">
-          <el-input
-            v-model="historyOrderDetailsFormData.date"
-            :disabled="true"
-          ></el-input>
+          <el-input v-model="historyOrderDetailsFormData.date" :disabled="true"></el-input>
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
-          <el-input
-            v-model="historyOrderDetailsFormData.status"
-            :disabled="true"
-          ></el-input>
+          <el-input v-model="historyOrderDetailsFormData.status" :disabled="true"></el-input>
         </el-form-item>
 
         <el-form-item label="总金额（元）" prop="total">
-          <el-input
-            v-model="historyOrderDetailsFormData.total"
-            :disabled="true"
-          ></el-input>
+          <el-input v-model="historyOrderDetailsFormData.total" :disabled="true"></el-input>
         </el-form-item>
 
         <el-form-item label="送货地址" prop="address">
-          <el-input
-            v-model="historyOrderDetailsFormData.address"
-            :disabled="true"
-          ></el-input>
+          <el-input v-model="historyOrderDetailsFormData.address" :disabled="true"></el-input>
         </el-form-item>
       </el-form>
 
@@ -962,41 +754,17 @@
         border
         style="width: 100%"
       >
-        <el-table-column
-          type="index"
-          label="序号"
-          align="center"
-        ></el-table-column>
+        <el-table-column type="index" label="序号" align="center"></el-table-column>
 
-        <el-table-column
-          property="name"
-          label="商品名称"
-          align="center"
-        ></el-table-column>
+        <el-table-column property="name" label="商品名称" align="center"></el-table-column>
 
-        <el-table-column
-          property="num"
-          label="数量"
-          align="center"
-        ></el-table-column>
+        <el-table-column property="num" label="数量" align="center"></el-table-column>
 
-        <el-table-column
-          property="unit"
-          label="单位"
-          align="center"
-        ></el-table-column>
+        <el-table-column property="unit" label="单位" align="center"></el-table-column>
 
-        <el-table-column
-          property="price"
-          label="单价（元）"
-          align="center"
-        ></el-table-column>
+        <el-table-column property="price" label="单价（元）" align="center"></el-table-column>
 
-        <el-table-column
-          property="totalPrice"
-          label="金额（元）"
-          align="center"
-        ></el-table-column>
+        <el-table-column property="totalPrice" label="金额（元）" align="center"></el-table-column>
       </el-table>
     </el-dialog>
 
@@ -1004,6 +772,7 @@
     <el-dialog
       ref="create_intercourse_dialog"
       :visible.sync="createIntercourseDialogVisible"
+      :title="popUpTradeDialogTitle"
     >
       <el-form
         :model="createIntercourseFormData"
@@ -1045,14 +814,10 @@
                 @click="
                   submitCreateIntercourseForm('createIntercourseFormData')
                 "
-                >确定提交</el-button
-              >
+              >确定提交</el-button>
             </el-col>
             <el-col :span="4" :offset="1">
-              <el-button
-                @click="resetreateIntercourseForm('createIntercourseFormData')"
-                >重置表单</el-button
-              >
+              <el-button @click="resetreateIntercourseForm('createIntercourseFormData')">重置表单</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -1069,6 +834,10 @@ axios.defaults.withCredentials = true;
 export default {
   data() {
     return {
+      popUpCustomerDialogTitle: "新建客户",
+      popUpContactDialogTitle: "新建联系人",
+      popUpTradeDialogTitle: "添加交易",
+
       // 查询类型
       selectKey: {
         type: "",
@@ -1078,7 +847,7 @@ export default {
       // “新建客户/修改客户信息”弹出框显示控制
       createNewCustomerDialogVisible: false,
 
-      // 折叠面板活跃项
+      // 折叠面板活跃项 collapseActiveName: "1",
       collapseActiveName: "1",
 
       // 客户基本信息相关----------------------------------------------------------------
@@ -1318,9 +1087,33 @@ export default {
     },
 
     getDiffrentInfo(activeNames) {
-      if (activeNames == "1") {
-        //加载客户信息
-        if (this.inputCustomerID != null) {
+      if (this.inputCustomerID == "") {
+        this.$message({
+          type: "warning",
+          message: "请输入内容点击查询后再试"
+        });
+      } else {
+        if (activeNames == "1") {
+          // if (this.inputCustomerID != null) {
+          //   axios
+          //     .get(Api.getCompanyInfoUrl, {
+          //       params: {
+          //         key: this.inputCustomerID
+          //       }
+          //     })
+          //     .then(res => {
+          //       if (res.data.code == 1) {
+          //         this.customerInfoData = res.data.data;
+          //       } else {
+          //         this.$message({
+          //           type: "failed",
+          //           message: "加载失败，请重试！！"
+          //         });
+          //       }
+          //     });
+          // }
+
+          //加载客户信息
           axios
             .get(Api.getCompanyInfoUrl, {
               params: {
@@ -1337,10 +1130,26 @@ export default {
                 });
               }
             });
-        }
-      } else if (activeNames == "2") {
-        //加载联系人信息
-        if (this.inputCustomerID != null) {
+        } else if (activeNames == "2") {
+          //加载联系人信息
+          // if (this.inputCustomerID != null) {
+          //   axios
+          //     .get(Api.getContactsUrl, {
+          //       params: {
+          //         id: this.inputCustomerID
+          //       }
+          //     })
+          //     .then(res => {
+          //       if (res.data.code == 1) {
+          //         this.contactsListData = res.data.data;
+          //       } else {
+          //         this.$message({
+          //           type: "failed",
+          //           message: "加载失败，请重试！！"
+          //         });
+          //       }
+          //     });
+          // }
           axios
             .get(Api.getContactsUrl, {
               params: {
@@ -1350,6 +1159,8 @@ export default {
             .then(res => {
               if (res.data.code == 1) {
                 this.contactsListData = res.data.data;
+                console.log("this: ", this);
+                console.log("update data");
               } else {
                 this.$message({
                   type: "failed",
@@ -1357,11 +1168,27 @@ export default {
                 });
               }
             });
-        }
-      } else if (activeNames == "3") {
-        //加载历史订单信息
-        console.log(activeNames);
-        if (this.inputCustomerID != null) {
+        } else if (activeNames == "3") {
+          //加载历史订单信息
+          console.log(activeNames);
+          // if (this.inputCustomerID != null) {
+          //   axios
+          //     .get(Api.getHistoryUrl, {
+          //       params: {
+          //         id: this.inputCustomerID
+          //       }
+          //     })
+          //     .then(res => {
+          //       if (res.data.code == 1) {
+          //         this.historyOrderListData = res.data.data;
+          //       } else {
+          //         this.$message({
+          //           type: "failed",
+          //           message: "加载失败，请重试！！"
+          //         });
+          //       }
+          //     });
+          // }
           axios
             .get(Api.getHistoryUrl, {
               params: {
@@ -1378,10 +1205,26 @@ export default {
                 });
               }
             });
-        }
-      } else if (activeNames == "4") {
-        //加载交往信息
-        if (this.inputCustomerID != null) {
+        } else if (activeNames == "4") {
+          //加载交往信息
+          // if (this.inputCustomerID != null) {
+          //   axios
+          //     .get(Api.getIntercourseInfoUrl, {
+          //       params: {
+          //         id: this.inputCustomerID
+          //       }
+          //     })
+          //     .then(res => {
+          //       if (res.data.code == 1) {
+          //         this.intercourseListData = res.data.data;
+          //       } else {
+          //         this.$message({
+          //           type: "failed",
+          //           message: "加载失败，请重试！！"
+          //         });
+          //       }
+          //     });
+          // }
           axios
             .get(Api.getIntercourseInfoUrl, {
               params: {
@@ -1405,7 +1248,8 @@ export default {
     // “新建客户”点击事件
     createNewCustomer() {
       this.customerInfoData = {};
-      this.$refs.create_new_customer_dialog.title = "新建客户";
+      //this.$refs.create_new_customer_dialog.title = "新建客户";
+      this.popUpCustomerDialogTitle = "新建客户";
       this.createNewCustomerDialogVisible = true;
     },
 
@@ -1413,7 +1257,8 @@ export default {
     submitCreateNewCustomerForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.$refs.create_new_customer_dialog.title == "新建客户") {
+          //if (this.$refs.create_new_customer_dialog.title == "新建客户") {
+          if (this.popUpCustomerDialogTitle == "新建客户") {
             /**
              * 创建新客户
              */
@@ -1512,7 +1357,8 @@ export default {
 
     // 客户基本信息管理------------------------------------------------------------------------------------
     editCustomerInfo() {
-      this.$refs.create_new_customer_dialog.title = "修改客户基本信息";
+      //this.$refs.create_new_customer_dialog.title = "修改客户基本信息";
+      this.popUpCustomerDialogTitle = "修改客户基本信息";
       this.createNewCustomerDialogVisible = true;
     },
 
@@ -1520,13 +1366,15 @@ export default {
     // 添加联系人
     addContacts() {
       this.createContactsFormData = {};
-      this.$refs.create_contacts_dialog.title = "创建联系人";
+      //this.$refs.create_contacts_dialog.title = "创建联系人";
+      this.popUpContactDialogTitle = "创建联系人";
       this.createContactsDialogVisible = true;
     },
 
     // 修改联系人信息
     editContactsInfo() {
-      this.$refs.create_contacts_dialog.title = "修改联系人信息";
+      //this.$refs.create_contacts_dialog.title = "修改联系人信息";
+      this.popUpContactDialogTitle = "修改联系人信息";
       this.createContactsFormData = this.currentRowOfContacts;
       this.createContactsFormData.officePhone = this.currentRowOfContacts.office_phone;
       //console.log("联系人id"+this.currentRowOfContacts.id);
@@ -1544,6 +1392,32 @@ export default {
     // 表格交往记录控制当前选中行
     handleCurrentIntercourseChange(val) {
       this.currentRowOfIntercourse = val;
+    },
+
+    // 刷新联系人列表
+    refreshContactsList() {
+      console.log("refresh: " + this.inputCustomerID);
+      if (this.inputCustomerID != "") {
+        axios
+          .get(Api.getContactsUrl, {
+            params: {
+              id: this.inputCustomerID
+            }
+          })
+          .then(res => {
+            if (res.data.code == 1) {
+              this.contactsListData = {};
+              this.contactsListData = res.data.data;
+              console.log("current => this: ", this);
+              console.log("update data");
+            } else {
+              this.$message({
+                type: "failed",
+                message: "加载失败，请重试！！"
+              });
+            }
+          });
+      }
     },
 
     // 批量删除联系人
@@ -1579,29 +1453,7 @@ export default {
             }
           });
       });
-    },
-
-    // 刷新联系人列表
-    refreshContactsList() {
-      console.log("refresh" + this.inputCustomerID);
-      if (this.inputCustomerID != null) {
-        axios
-          .get(Api.getContactsUrl, {
-            params: {
-              id: this.inputCustomerID
-            }
-          })
-          .then(res => {
-            if (res.data.code == 1) {
-              this.contactsListData = res.data.data;
-            } else {
-              this.$message({
-                type: "failed",
-                message: "加载失败，请重试！！"
-              });
-            }
-          });
-      }
+      this.refreshContactsList();
     },
 
     // 取消选择联系人
@@ -1611,10 +1463,11 @@ export default {
     },
 
     // “新建/修改联系人”对话框---------------------------------------------------
-    async submitCreateContactsForm(formName) {
+    submitCreateContactsForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.$refs.create_contacts_dialog.title == "创建联系人") {
+          // if (this.$refs.create_contacts_dialog.title == "创建联系人")
+          if (this.popUpContactDialogTitle == "创建联系人") {
             axios
               .post(
                 Api.createContactUrl,
@@ -1675,7 +1528,11 @@ export default {
         }
       }),
         this.$refs[formName].resetFields();
-      this.$options.methods.refreshContactsList();
+      // do fucking refresh
+      //this.$options.methods.refreshContactsList();
+      console.log("do fucking refresh");
+      //
+      this.refreshContactsList();
     },
     resetreateContactsForm(formName) {
       //this.$refs[formName].resetFields();
@@ -1718,15 +1575,16 @@ export default {
     // 添加交往信息
     addIntercourse() {
       this.createIntercourseFormData = {};
-      this.$refs.create_intercourse_dialog.title = "创建交往信息记录";
-
+      //this.$refs.create_intercourse_dialog.title = "创建交往信息记录";
+      this.popUpTradeDialogTitle = "创建交往信息记录";
       this.createIntercourseDialogVisible = true;
     },
 
     // 修改交往信息
     editIntercourseInfo() {
       //console.log(this.currentRowOfIntercourse.trd_id);
-      this.$refs.create_intercourse_dialog.title = "修改交往信息记录";
+      //this.$refs.create_intercourse_dialog.title = "修改交往信息记录";
+      this.popUpTradeDialogTitle = "修改交往信息记录";
       this.createIntercourseFormData = this.currentRowOfIntercourse;
       this.createIntercourseDialogVisible = true;
     },
@@ -1798,9 +1656,8 @@ export default {
     async submitCreateIntercourseForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (
-            this.$refs.create_intercourse_dialog.title == "创建交往信息记录"
-          ) {
+          //if (this.$refs.create_intercourse_dialog.title == "创建交往信息记录")
+          if (this.popUpTradeDialogTitle == "创建交往信息记录") {
             console.log("创建交往记录");
             axios
               .post(

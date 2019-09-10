@@ -1,9 +1,7 @@
 <template>
   <el-container>
     <!-- Header -->
-    <el-header
-      style="background-color: #ffffff; margin: 10px 0px 20px 0px; height:70px"
-    >
+    <el-header style="background-color: #ffffff; margin: 10px 0px 20px 0px; height:70px">
       <el-row>
         <el-col :span="3">
           <el-image :src="logoUrl" style="height:70px"></el-image>
@@ -13,12 +11,7 @@
         </el-col>
         <!-- 退出按钮 -->
         <el-col :span="1">
-          <el-button
-            icon="el-icon-switch-button"
-            @click="logOut()"
-            circle
-            style="marginTop:20px;"
-          ></el-button>
+          <el-button icon="el-icon-switch-button" @click="logOut()" circle style="marginTop:20px;"></el-button>
         </el-col>
       </el-row>
     </el-header>
@@ -40,17 +33,13 @@
             <el-row style="height:40px">
               <div
                 style="font-size:15px; font-weight: bold; text-align:left; color:#000000; margin:10px 0px 0px 3px"
-              >
-                {{ userName }}
-              </div>
+              >{{ userName }}</div>
             </el-row>
 
             <el-row style="height:30px">
               <div
                 style="font-size:12px; text-align:left; color:#303133; margin:0px 0px 0px 3px"
-              >
-                {{ userType }}
-              </div>
+              >{{ userType }}</div>
             </el-row>
           </el-col>
         </el-row>
@@ -69,12 +58,8 @@
               <i class="el-icon-s-platform"></i>
               <span>营销管理</span>
             </template>
-            <el-menu-item index="/Home/MarketingOpportunityManagement"
-              >营销机会管理</el-menu-item
-            >
-            <el-menu-item index="/Home/CustomerDevelopmentPlan"
-              >客户开发计划</el-menu-item
-            >
+            <el-menu-item index="/Home/MarketingOpportunityManagement">营销机会管理</el-menu-item>
+            <el-menu-item index="/Home/CustomerDevelopmentPlan">客户开发计划</el-menu-item>
           </el-submenu>
 
           <!-- 客户管理 -->
@@ -83,12 +68,8 @@
               <i class="el-icon-s-custom"></i>
               <span>客户管理</span>
             </template>
-            <el-menu-item index="/Home/CustomerInfoManagement"
-              >客户信息管理</el-menu-item
-            >
-            <el-menu-item index="/Home/CustomerLoseManagement"
-              >客户流失管理</el-menu-item
-            >
+            <el-menu-item index="/Home/CustomerInfoManagement">客户信息管理</el-menu-item>
+            <el-menu-item index="/Home/CustomerLoseManagement">客户流失管理</el-menu-item>
           </el-submenu>
 
           <!-- 服务管理 -->
@@ -98,9 +79,7 @@
               <span>服务管理</span>
             </template>
             <el-menu-item index="/Home/ServiceCreate">服务创建</el-menu-item>
-            <el-menu-item index="/Home/ServiceManagement"
-              >服务管理</el-menu-item
-            >
+            <el-menu-item index="/Home/ServiceManagement">服务管理</el-menu-item>
           </el-submenu>
 
           <!-- 报表统计 -->
@@ -109,18 +88,10 @@
               <i class="el-icon-s-data"></i>
               <span>报表统计</span>
             </template>
-            <el-menu-item index="/Home/CustomerServeAnalysis"
-              >客户服务分析</el-menu-item
-            >
-            <el-menu-item index="/Home/CustomerConstructAnalysis"
-              >客户构成分析</el-menu-item
-            >
-            <el-menu-item index="/Home/CustomerContributeAnalysis"
-              >客户贡献分析</el-menu-item
-            >
-            <el-menu-item index="/Home/CustomerLoseAnalysis"
-              >客户流失分析</el-menu-item
-            >
+            <el-menu-item index="/Home/CustomerServeAnalysis">客户服务分析</el-menu-item>
+            <el-menu-item index="/Home/CustomerConstructAnalysis">客户构成分析</el-menu-item>
+            <el-menu-item index="/Home/CustomerContributeAnalysis">客户贡献分析</el-menu-item>
+            <el-menu-item index="/Home/CustomerLoseAnalysis">客户流失分析</el-menu-item>
           </el-submenu>
 
           <!-- 基本数据 -->
@@ -129,15 +100,9 @@
               <i class="el-icon-tickets"></i>
               <span>基本数据</span>
             </template>
-            <el-menu-item index="/Home/DataDictionaryManagement"
-              >数据字典管理</el-menu-item
-            >
-            <el-menu-item index="/Home/SelectProductInfo"
-              >查询产品信息</el-menu-item
-            >
-            <el-menu-item index="/Home/SelectProductReserves"
-              >查询库存</el-menu-item
-            >
+            <el-menu-item index="/Home/DataDictionaryManagement">数据字典管理</el-menu-item>
+            <el-menu-item index="/Home/SelectProductInfo">查询产品信息</el-menu-item>
+            <el-menu-item index="/Home/SelectProductReserves">查询库存</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -176,6 +141,9 @@ export default {
   },
 
   mounted: function() {
+    // init page at console
+    this.$router.push("/Home/Console");
+
     axios.get(Api.getCurrentLoginAccountInfoUrl).then(res => {
       if (res.data.code == 1) {
         this.userName = res.data.data.name;
