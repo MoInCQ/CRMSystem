@@ -4,7 +4,13 @@
     <el-row style="margin: 0px 0px 30px 0px">
       <el-col :span="18">
         <el-input placeholder="请输入内容" v-model="search" style="background-color: #fff;">
-          <el-select slot="prepend" placeholder="类别" style="width: 130px; " disabled></el-select>
+          <el-select
+            slot="prepend"
+            :value="selectValue"
+            placeholder="类别"
+            style="width: 130px;"
+            disabled
+          ></el-select>
           <el-button slot="append" icon="el-icon-search" @click="selectByPrimaryKey(selectKey)">查询</el-button>
         </el-input>
       </el-col>
@@ -29,7 +35,7 @@
                 icon="el-icon-plus"
                 @click="addDictionary()"
               >创建条目</el-button>
-            </el-col> -->
+            </el-col>-->
 
             <!-- <el-col :span="2">
               <el-button
@@ -38,7 +44,7 @@
                 icon="el-icon-delete"
                 @click="deleteDictionaryInBatches()"
               >批量删除</el-button>
-            </el-col> -->
+            </el-col>-->
 
             <!-- <el-col :span="2">
               <el-button
@@ -47,7 +53,7 @@
                 icon="el-icon-close"
                 @click="toggleDictionarySelection()"
               >取消选择</el-button>
-            </el-col> -->
+            </el-col>-->
           </el-row>
         </div>
 
@@ -122,6 +128,7 @@
 export default {
   data() {
     return {
+      selectValue: "",
       // 查询类型
       selectKey: {
         type: "",
@@ -241,9 +248,7 @@ export default {
     },
 
     // 批量删除联系人
-    deleteDictionaryInBatches() {
-
-    },
+    deleteDictionaryInBatches() {},
 
     // 取消选择联系人
     toggleDictionarySelection() {
@@ -263,8 +268,6 @@ export default {
           this.Num += Math.floor(Math.random() * 10);
         }
 
-
-       
         this.dictionaryListData[0].number = this.Num;
         this.dictionaryListData[0] = this.createItemFormData;
       }

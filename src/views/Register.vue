@@ -9,7 +9,7 @@
             <el-card>
               <el-row>
                 <el-col :span="18">
-                  <el-image :src="imageUrl" style="height:500px" :fit="cover"></el-image>
+                  <el-image :src="imageUrl" style="height:500px" :fit="imgFit"></el-image>
                 </el-col>
 
                 <el-col :span="5" style="margin-left:20px">
@@ -98,12 +98,13 @@ export default {
     };
 
     return {
+      imgFit: "cover",
       activeName: "second",
       ruleForm: {
-        email:"",
+        email: "",
         name: "",
         pwd: "",
-        type:""
+        type: ""
       },
       rules: {
         name: [
@@ -129,14 +130,12 @@ export default {
           axios
             .post(
               Api.registerUrl,
-              qs.stringify(
-                {
-                  name: this.ruleForm.name,
-                  email: this.ruleForm.email,
-                  pwd: this.ruleForm.pwd,
-                  type: "ADMIN"
-                }
-              )
+              qs.stringify({
+                name: this.ruleForm.name,
+                email: this.ruleForm.email,
+                pwd: this.ruleForm.pwd,
+                type: "ADMIN"
+              })
             )
             .then(res => {
               console.log(res.data.code);

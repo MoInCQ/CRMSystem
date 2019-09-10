@@ -115,7 +115,11 @@
     </el-row>
 
     <!-- “创建/修改营销”弹出框 -->
-    <el-dialog ref="create_marketing_opportunity_dialog" :visible.sync="dialogFormVisible">
+    <el-dialog
+      :visible.sync="dialogFormVisible"
+      :title="daiLogTitle"
+      ref="create_marketing_opportunity_dialog"
+    >
       <el-form
         :model="creatingMarketingOpportunityForm"
         :rules="rules"
@@ -210,6 +214,7 @@ export default {
   inject: ["reload"],
   data() {
     return {
+      daiLogTitle: "创建营销机会",
       //表格内容
       marketingOpportunityListData: [
         {
@@ -281,9 +286,13 @@ export default {
         refEpeId: [
           { required: true, message: "请指派此次营销负责人", trigger: "change" }
         ],
-        appointedTime:[{
-          required: true, message: "请合适的指派时间", trigger: "change"
-        }]
+        appointedTime: [
+          {
+            required: true,
+            message: "请合适的指派时间",
+            trigger: "change"
+          }
+        ]
       }
     };
   },
@@ -310,6 +319,8 @@ export default {
   },
 
   methods: {
+    onRowClick() {},
+
     // 查询框-------------------------------------------------------
     selectByPrimaryKey() {
       console.log("输入的内容" + this.selectKey.type);
@@ -384,7 +395,8 @@ export default {
     creatingMarketingOpportunity() {
       this.creatingMarketingOpportunityForm = {};
       this.dialogFormVisible = true;
-      this.$refs.create_marketing_opportunity_dialog.title = "创建营销机会";
+      //this.$refs.create_marketing_opportunity_dialog.title = "创建营销机会";
+      this.daiLogTitle = "创建营销机会";
     },
 
     // 表格--------------------------------------------------------
@@ -462,7 +474,16 @@ export default {
 
     // 修改营销机会
     editMarketingOpportunity() {
-      this.$refs.create_marketing_opportunity_dialog.title = "修改营销机会";
+      if (this.currentRow.id == "") {
+        this.$message({
+          type: "failed",
+          message: "请单机选中行后再点击修改按钮"
+        });
+        return;
+      }
+
+      //this.$refs.create_marketing_opportunity_dialog.title = "修改营销机会";
+      this.daiLogTitle = "修改营销机会";
       console.log(
         "标题为：" + this.$refs.create_marketing_opportunity_dialog.title
       );
@@ -538,8 +559,9 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (
-            this.$refs.create_marketing_opportunity_dialog.title ==
-            "修改营销机会"
+            // this.$refs.create_marketing_opportunity_dialog.title ==
+            // "修改营销机会"
+            this.daiLogTitle == "修改营销机会"
           ) {
             console.log("则是修改:!!!:" + this.currentRowStaffId);
 

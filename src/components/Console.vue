@@ -12,7 +12,7 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar :size="size" :src="totalCustomerAmountPicUrl"></el-avatar>
+                    <el-avatar :size="avatarSize" :src="totalCustomerAmountPicUrl"></el-avatar>
                   </el-col>
                   <el-col :span="14">
                     <div class="card-content-text-title">{{statistics.customer_amount}}</div>
@@ -27,7 +27,7 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar :size="size" :src="loseCoustomerAmountPicUrl"></el-avatar>
+                    <el-avatar :size="avatarSize" :src="loseCoustomerAmountPicUrl"></el-avatar>
                   </el-col>
 
                   <el-col :span="14">
@@ -43,7 +43,7 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar :size="size" :src="newOrderAmountPicUrl"></el-avatar>
+                    <el-avatar :size="avatarSize" :src="newOrderAmountPicUrl"></el-avatar>
                   </el-col>
 
                   <el-col :span="14">
@@ -62,7 +62,7 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar :size="size" :src="developCustomerAmountPicUrl"></el-avatar>
+                    <el-avatar :size="avatarSize" :src="developCustomerAmountPicUrl"></el-avatar>
                   </el-col>
 
                   <el-col :span="14">
@@ -78,7 +78,7 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar :size="size" :src="feedbackAmountPicUrl"></el-avatar>
+                    <el-avatar :size="avatarSize" :src="feedbackAmountPicUrl"></el-avatar>
                   </el-col>
 
                   <el-col :span="14">
@@ -94,7 +94,7 @@
               <el-card class="little-card-style" shadow="hover">
                 <el-row>
                   <el-col :span="10">
-                    <el-avatar :size="size" :src="commodityAmountPicUrl"></el-avatar>
+                    <el-avatar :size="avatarSize" :src="commodityAmountPicUrl"></el-avatar>
                   </el-col>
 
                   <el-col :span="14">
@@ -197,6 +197,8 @@ axios.defaults.withCredentials = true;
 export default {
   data() {
     return {
+      avatarSize: "large",
+
       totalCustomerAmountPicUrl: require("../assets/totalCustomerAmountPic.png"),
       loseCoustomerAmountPicUrl: require("../assets/loseCoustomerAmountPic.png"),
       newOrderAmountPicUrl: require("../assets/newOrderAmountPic.png"),
@@ -204,10 +206,10 @@ export default {
       feedbackAmountPicUrl: require("../assets/feedbackAmountPic.png"),
       commodityAmountPicUrl: require("../assets/commodityAmountPic.png"),
 
-      past7DaysSaleNum:[],
+      past7DaysSaleNum: [],
 
-      topShopX:[],
-      topShopY:[],
+      topShopX: [],
+      topShopY: [],
 
       statistics: {
         developed_customer_amount: 0,
@@ -224,8 +226,7 @@ export default {
           id: "34234",
           name: "汉东省京州市大风厂",
           amount: 888.88
-        },
-
+        }
       ]
     };
   },
@@ -237,24 +238,21 @@ export default {
     this.handleTopTenSaleInfo();
     this.handleTopSevenShopX();
     this.handleTopSevenShopY();
-    
   },
   methods: {
-    handlePast7DaysSaleNum(){
+    handlePast7DaysSaleNum() {
       axios
-        .get(
-          Api.consoleUrl,{
-            params: { 
-              type: "LineGraph"
-            },
+        .get(Api.consoleUrl, {
+          params: {
+            type: "LineGraph"
           }
-        )
+        })
         .then(res => {
           console.log(res.data);
           if (res.data.code == 1) {
             //this.past7DaysSaleNum = res.data.data;
-            console.log("长度为：：：：：："+res.data.data.length);
-            for(var i = 0; i<res.data.data.length;i++){
+            console.log("长度为：：：：：：" + res.data.data.length);
+            for (var i = 0; i < res.data.data.length; i++) {
               this.past7DaysSaleNum[i] = res.data.data[i].sale_amount;
             }
             this.drawLine();
@@ -262,15 +260,13 @@ export default {
         });
     },
 
-    handlePastTotalNum(){
+    handlePastTotalNum() {
       axios
-        .get(
-          Api.consoleUrl,{
-            params: { 
-              type: "chart"
-            },
+        .get(Api.consoleUrl, {
+          params: {
+            type: "chart"
           }
-        )
+        })
         .then(res => {
           console.log(res.data);
           if (res.data.code == 1) {
@@ -279,16 +275,14 @@ export default {
           }
         });
     },
-    
-    handleTopTenSaleInfo(){
+
+    handleTopTenSaleInfo() {
       axios
-        .get(
-          Api.consoleUrl,{
-            params: { 
-              type: "form"
-            },
+        .get(Api.consoleUrl, {
+          params: {
+            type: "form"
           }
-        )
+        })
         .then(res => {
           console.log(res.data);
           if (res.data.code == 1) {
@@ -299,19 +293,17 @@ export default {
         });
     },
 
-    handleTopSevenShopX(){
+    handleTopSevenShopX() {
       axios
-        .get(
-          Api.consoleUrl,{
-            params: { 
-              type: "histogram"
-            },
+        .get(Api.consoleUrl, {
+          params: {
+            type: "histogram"
           }
-        )
+        })
         .then(res => {
           console.log(res.data);
           if (res.data.code == 1) {
-            for(var i = 0; i<res.data.data.length;i++){
+            for (var i = 0; i < res.data.data.length; i++) {
               this.topShopX[i] = res.data.data[i].sale_amount;
               this.drawBar();
             }
@@ -319,27 +311,23 @@ export default {
         });
     },
 
-
-    handleTopSevenShopY(){
+    handleTopSevenShopY() {
       axios
-        .get(
-          Api.consoleUrl,{
-            params: { 
-              type: "histogram"
-            },
+        .get(Api.consoleUrl, {
+          params: {
+            type: "histogram"
           }
-        )
+        })
         .then(res => {
           console.log(res.data);
           if (res.data.code == 1) {
-            for(var i = 0; i<res.data.data.length;i++){
+            for (var i = 0; i < res.data.data.length; i++) {
               this.topShopY[i] = res.data.data[i].sale_amount;
               this.drawBar();
             }
           }
         });
     },
-
 
     drawBar() {
       // 基于准备好的dom，初始化echarts实例
@@ -351,7 +339,7 @@ export default {
         },
         tooltip: {},
         xAxis: {
-          data:this.topShopX
+          data: this.topShopX
           //data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子", "大衣", "羽绒服", "运动鞋", "工装裤"]
         },
         yAxis: {},
@@ -359,7 +347,7 @@ export default {
           {
             name: "销量",
             type: "bar",
-            data:this.topShopY
+            data: this.topShopY
             //data: [5, 20, 36, 10, 10, 20, 42, 21, 32, 24]
           }
         ]
@@ -367,7 +355,6 @@ export default {
     },
 
     drawLine() {
-      
       // 基于准备好的dom，初始化echarts实例
       let lineChart = this.$echarts.init(document.getElementById("lineChart"));
       // 绘制图表
@@ -377,7 +364,15 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: ["第七天", "第六天", "第五天", "第四天", "第三天", "第二天", "第一天"]
+          data: [
+            "第七天",
+            "第六天",
+            "第五天",
+            "第四天",
+            "第三天",
+            "第二天",
+            "第一天"
+          ]
         },
         yAxis: {
           type: "value"
@@ -385,7 +380,7 @@ export default {
         series: [
           {
             //data: [820, 932, 901, 934, 1290, 1330, 1320],
-            data:this.past7DaysSaleNum,
+            data: this.past7DaysSaleNum,
             type: "line"
           }
         ]
