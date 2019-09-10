@@ -1,35 +1,7 @@
 <template>
   <div>
     <!-- 查询框 -->
-    <el-row style="margin: 0px 0px 30px 0px">
-      <el-form :model="selectKey" label-width="100px">
-        <el-row>
-          <el-col :span="6">
-            <el-form-item label="选择年份">
-              <el-select v-model="selectKey.year" style="width:100%">
-                <el-option label="2009" value="2009"></el-option>
-                <el-option label="2010" value="2010"></el-option>
-                <el-option label="2011" value="2011"></el-option>
-                <el-option label="2012" value="2012"></el-option>
-                <el-option label="2013" value="2013"></el-option>
-                <el-option label="2014" value="2014"></el-option>
-                <el-option label="2015" value="2015"></el-option>
-                <el-option label="2016" value="2016"></el-option>
-                <el-option label="2017" value="2017"></el-option>
-                <el-option label="2018" value="2018"></el-option>
-                <el-option label="2019" value="2019"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <!-- 提交表单按钮 -->
-
-          <el-col :span="3" :offset="15">
-            <el-button round type="primary" @click="selectByPrimaryKey()" style="width: 100%">搜索</el-button>
-          </el-col>
-        </el-row>
-      </el-form>
-    </el-row>
+    
 
     <!-- 折线图 -->
     <el-row>
@@ -76,27 +48,24 @@
 export default {
   data() {
     return {
-      // 查询类型
-      selectKey: {
-        year: ""
-      },
+     
 
       // “客户服务信息”列表数据
       customerServeAnalysisListData: [
         {
           number: "1",
           item: "建议",
-          amount: 24
+          amount: 70
         },
         {
           number: "2",
           item: "咨询",
-          amount: 24
+          amount: 280
         },
         {
           number: "3",
           item: "投诉",
-          amount: 24
+          amount: 6
         }
       ]
     };
@@ -105,10 +74,6 @@ export default {
     this.drawLine();
   },
   methods: {
-    // 查询框-------------------------------------------------------
-    selectByPrimaryKey(selectKey) {
-      console.log(selectKey);
-    },
 
     drawLine() {
       // 基于准备好的dom，初始化echarts实例
@@ -119,7 +84,7 @@ export default {
           trigger: "axis"
         },
         legend: {
-          data: ["邮件营销", "联盟广告", "视频广告", "直接访问", "搜索引擎"]
+          data: ["建议", "咨询", "投诉", ]
         },
         grid: {
           left: "3%",
@@ -142,34 +107,22 @@ export default {
         },
         series: [
           {
-            name: "邮件营销",
+            name: "建议",
             type: "line",
             stack: "总量",
-            data: [120, 132, 101, 134, 90, 230, 210]
+            data: [5, 10, 15, 30, 6, 4, 20]
           },
           {
-            name: "联盟广告",
+            name: "咨询",
             type: "line",
             stack: "总量",
-            data: [220, 182, 191, 234, 290, 330, 310]
+            data: [30, 30, 20, 55, 45, 20, 60]
           },
           {
-            name: "视频广告",
+            name: "投诉",
             type: "line",
             stack: "总量",
-            data: [150, 232, 201, 154, 190, 330, 410]
-          },
-          {
-            name: "直接访问",
-            type: "line",
-            stack: "总量",
-            data: [320, 332, 301, 334, 390, 330, 320]
-          },
-          {
-            name: "搜索引擎",
-            type: "line",
-            stack: "总量",
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
+            data: [1, 0, 1, 1, 0, 2, 1]
           }
         ]
       });

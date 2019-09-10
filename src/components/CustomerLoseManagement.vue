@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 查询框 -->
-    <el-row style="margin: 0px 0px 30px 0px">
+    <!-- <el-row style="margin: 0px 0px 30px 0px">
       <el-col :span="18">
         <el-input placeholder="请输入内容" v-model="selectKey.value" style="background-color: #fff;">
           <el-select
@@ -16,7 +16,7 @@
           <el-button slot="append" icon="el-icon-search" @click="selectByPrimaryKey(selectKey)">查询</el-button>
         </el-input>
       </el-col>
-    </el-row>
+    </el-row> -->
 
     <el-row style="margin-top:15px">
       <!-- 客户流失管理列表 -->
@@ -29,6 +29,17 @@
                 style="font-size:20px; text-align:left; color:#000000; margin:10px 0px 0px 10px"
               >客户流失管理列表</div>
             </el-col>
+
+
+            <el-col :span="2" :offset="6">
+                    <el-button
+                      style="float: right; padding: 3px 0 ; height:40px; text-align:center"
+                      type="text"
+                      icon="el-icon-refresh"
+                      @click="refreshList()"
+                    >刷新列表</el-button>
+                  </el-col>
+
           </el-row>
         </div>
 
@@ -44,47 +55,36 @@
         >
           <el-table-column type="index" label="序号" align="center"></el-table-column>
 
-          <el-table-column property="number" label="客户编号" align="center"></el-table-column>
+          <el-table-column property="id" label="客户编号" align="center"></el-table-column>
 
-          <el-table-column property="manager" label="客户经理" align="center"></el-table-column>
+          <el-table-column property="manager_name" label="客户经理" align="center"></el-table-column>
 
-          <el-table-column property="lastOrdDate" label="上次下单时间" align="center"></el-table-column>
+          <el-table-column property="last_order_time" label="上次下单时间" align="center"></el-table-column>
 
-          <el-table-column property="confirmLoseDate" label="确认流失时间" align="center"></el-table-column>
+          <el-table-column property="lost_time" label="确认流失时间" align="center"></el-table-column>
 
           <el-table-column
-            prop="tag"
+            prop="status"
             label="状态"
             width="100"
-            :filters="[{ text: '暂缓流失', value: '暂缓流失' }, { text: '确认流失', value: '确认流失' }]"
+            :filters="[{ text: '暂缓流失', value: '暂缓流失' }, { text: '已流失', value: '已流失' }]"
             :filter-method="filterTag"
             filter-placement="bottom-end"
             align="center"
           >
             <template slot-scope="scope">
               <el-tag
-                :type="scope.row.tag === '暂缓流失' ? 'primary' : 'danger'"
+                :type="scope.row.status === '暂缓流失' ? 'primary' : 'danger'"
                 disable-transitions
-              >{{scope.row.tag}}</el-tag>
+              >{{scope.row.status}}</el-tag>
             </template>
           </el-table-column>
 
-          <el-table-column label="查看/编辑暂缓措施" align="center">
+          <el-table-column label="查看/编辑" align="center">
             <template>
               <el-button
                 @click="editPostponeCustomerLoseInfo()"
                 icon="el-icon-edit"
-                circle
-                size="small"
-              ></el-button>
-            </template>
-          </el-table-column>
-
-          <el-table-column label="查看/编辑流失原因" align="center">
-            <template>
-              <el-button
-                @click="editConfirmCustomerLoseInfo()"
-                icon="el-icon-close"
                 circle
                 size="small"
               ></el-button>
@@ -106,8 +106,15 @@
         ref="postponeCustomerLoseInfoFormData"
         label-width="100px"
       >
-        <el-form-item label="暂缓措施" prop="measure">
-          <el-input type="textarea" v-model="postponeCustomerLoseInfoFormData.measure"></el-input>
+        <el-form-item label="流失状态" prop="status">
+          <el-input
+            type="textarea"
+            :disabled="true"
+            v-model="postponeCustomerLoseInfoFormData.status"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="暂缓措施" prop="measureOrReason">
+          <el-input type="textarea" v-model="postponeCustomerLoseInfoFormData.measureOrReason"></el-input>
         </el-form-item>
 
         <!-- 提交表单按钮 -->
@@ -137,8 +144,15 @@
         ref="confirmCustomerLoseInfoFormData"
         label-width="100px"
       >
-        <el-form-item label="流失原因" prop="reason">
-          <el-input type="textarea" v-model="confirmCustomerLoseInfoFormData.reason"></el-input>
+        <el-form-item label="流失状态" prop="status">
+          <el-input
+            type="textarea"
+            :disabled="true"
+            v-model="confirmCustomerLoseInfoFormData.status"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="流失原因" prop="measureOrReason">
+          <el-input type="textarea" v-model="confirmCustomerLoseInfoFormData.measureOrReason"></el-input>
         </el-form-item>
 
         <!-- 提交表单按钮 -->
@@ -159,6 +173,10 @@
 </template>
 
 <script>
+import axios from "axios";
+import qs from "qs";
+import Api from "../http/api";
+axios.defaults.withCredentials = true;
 export default {
   data() {
     return {
@@ -171,73 +189,67 @@ export default {
       // 客户流失信息列表
       customerLoseListData: [
         {
-          number: "1124142",
-          manager: "赵经理",
-          lastOrdDate: "2018-10-2",
-          confirmLoseDate: "/",
-          tag: "暂缓流失",
+          id: "",
+          manager_name: "",
+          last_order_time: "",
+          confirmLoseDate: "",
+          status: "",
           postponeLoseInfo: "",
-          confirmLoseInfo: ""
-        },
-        {
-          number: "1124142",
-          manager: "赵经理",
-          lastOrdDate: "2018-10-2",
-          confirmLoseDate: "/",
-          tag: "暂缓流失",
-          postponeLoseInfo: "",
-          confirmLoseInfo: ""
-        },
-        {
-          number: "1124142",
-          manager: "赵经理",
-          lastOrdDate: "2018-10-2",
-          confirmLoseDate: "/",
-          tag: "确认流失",
-          postponeLoseInfo: "",
-          confirmLoseInfo: ""
-        },
-        {
-          number: "1124142",
-          manager: "赵经理",
-          lastOrdDate: "2018-10-2",
-          confirmLoseDate: "/",
-          tag: "暂缓流失",
-          postponeLoseInfo: "",
-          confirmLoseInfo: ""
-        },
-        {
-          number: "1124142",
-          manager: "赵经理",
-          lastOrdDate: "2018-10-2",
-          confirmLoseDate: "/",
-          tag: "确认流失",
-          postponeLoseInfo: "",
-          confirmLoseInfo: ""
+          lost_time: ""
         }
       ],
       currentRow: "",
+      measureOrReason: "",
 
       // “暂缓流失”弹出框显示控制
       postponeCustomerLoseDialogVisible: false,
       // “暂缓流失”弹出框表单
       postponeCustomerLoseInfoFormData: {
-        measure: ""
+        status: "",
+        measureOrReason: ""
       },
 
       // “确认流失”弹出框显示控制
       confirmCustomerLoseDialogVisible: false,
       // “确认流失”弹出框表单
       confirmCustomerLoseInfoFormData: {
-        reason: ""
+        status: "",
+        measureOrReason: ""
       }
     };
   },
+  mounted: function() {
+    //得到所有流失客户
+    axios.get(Api.getAndUpdateCustomerLoseUrl).then(res => {
+      if (res.data.code == 1) {
+        this.customerLoseListData = res.data.data;
+      } else {
+        this.$message({
+          type: "failed",
+          message: "拉取失败，请重试！！"
+        });
+      }
+    });
+  },
 
   methods: {
-     // 查询框-------------------------------------------------------
-    selectByPrimaryKey(selectKey) {
-      console.log(selectKey);
+    // 查询框-------------------------------------------------------
+    // selectByPrimaryKey(selectKey) {
+    //   console.log(selectKey);
+    // },
+
+    refreshList(){
+      axios.get(Api.getAndUpdateCustomerLoseUrl).then(res => {
+      if (res.data.code == 1) {
+        this.customerLoseListData = res.data.data;
+      } else {
+        this.$message({
+          type: "failed",
+          message: "拉取失败，请重试！！"
+        });
+      }
+    });
+
     },
 
     // 表格控制当前选中行
@@ -247,27 +259,100 @@ export default {
 
     // 表格中的“状态”过滤器
     filterTag(value, row) {
-      return row.tag === value;
+      return row.status === value;
     },
 
     // 编辑暂缓措施
     editPostponeCustomerLoseInfo() {
-      this.postponeCustomerLoseDialogVisible = true;
+      if (this.currentRow.status == "暂缓流失") {
+        this.postponeCustomerLoseInfoFormData.status = this.currentRow.status;
+        console.log("当前行的状态"+this.currentRow.measure_or_reason);
+        this.postponeCustomerLoseInfoFormData.measureOrReason = this.currentRow.measure_or_reason;
+        this.postponeCustomerLoseDialogVisible = true;
+      } else {
+        
+        console.log("当前行的状态"+this.currentRow);
+        this.confirmCustomerLoseInfoFormData.status = this.currentRow.status;
+        this.confirmCustomerLoseInfoFormData.measureOrReason = this.currentRow.measure_or_reason;
+
+        this.confirmCustomerLoseDialogVisible = true;
+      }
+    },
+    getLostCustomer(){
+      //得到所有流失客户
+      axios.get(Api.getAndUpdateCustomerLoseUrl).then(res => {
+        if (res.data.code == 1) {
+          console.log("刷新，重新得到用户");
+          this.customerLoseListData = res.data.data;
+        } else {
+          this.$message({
+            type: "failed",
+            message: "拉取失败，请重试！！"
+          });
+        }
+      });
     },
 
     // 提交暂缓措施
-    submitPostponeCustomerLoseInfoForm() {
-      this.postponeCustomerLoseDialogVisible = false;
-    },
-
-    // 编辑确认流失原因
-    editConfirmCustomerLoseInfo() {
-      this.confirmCustomerLoseDialogVisible = true;
+   submitPostponeCustomerLoseInfoForm:async function() {
+      if (this.postponeCustomerLoseInfoFormData.measureOrReason != null) {
+        axios
+          .post(
+            Api.getAndUpdateCustomerLoseUrl,
+            qs.stringify({
+              id: this.currentRow.id,
+              status: this.postponeCustomerLoseInfoFormData.status,
+              measureOrReason: this.postponeCustomerLoseInfoFormData
+                .measureOrReason
+            })
+          )
+          .then(res => {
+            if (res.data.code == 1) {
+              this.$message({
+                type: "success",
+                message: "提交成功！！"
+              });
+              this.postponeCustomerLoseDialogVisible = false;
+            } else {
+              this.$message({
+                type: "failed",
+                message: "提交失败，请重试！！"
+              });
+            }
+          });
+          this.$options.methods.getLostCustomer();
+      }
     },
 
     // 提交暂缓措施
-    submitConfirmCustomerLoseInfoForm() {
-      this.confirmCustomerLoseDialogVisible = false;
+    async submitConfirmCustomerLoseInfoForm() {
+      if (this.confirmCustomerLoseInfoFormData.measureOrReason != null) {
+        axios
+          .post(
+            Api.getAndUpdateCustomerLoseUrl,
+            qs.stringify({
+              id: this.currentRow.id,
+              status: this.confirmCustomerLoseInfoFormData.status,
+              measureOrReason: this.confirmCustomerLoseInfoFormData
+                .measureOrReason
+            })
+          )
+          .then(res => {
+            if (res.data.code == 1) {
+              this.$message({
+                type: "success",
+                message: "提交成功！！"
+              });
+              this.confirmCustomerLoseDialogVisible = false;
+            } else {
+              this.$message({
+                type: "failed",
+                message: "提交失败，请重试！！"
+              });
+            }
+          });
+          this.$options.methods.getLostCustomer();
+      }
     }
   }
 };

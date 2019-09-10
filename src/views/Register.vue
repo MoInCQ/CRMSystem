@@ -18,12 +18,16 @@
                       style="font-weight:bolder; font-size:larger; marginTop: 80px; margin-bottom: 30px"
                     >注册</h3>
 
-                    <el-form-item label="名称" prop="name">
+                    <el-form-item label="电子邮件" prop="email">
+                      <el-input v-model="ruleForm.email"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="用户名" prop="name">
                       <el-input v-model="ruleForm.name"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="密码" prop="pass">
-                      <el-input type="password" v-model="ruleForm.pass" auto-complete="off"></el-input>
+                    <el-form-item label="密码" prop="pwd">
+                      <el-input type="password" v-model="ruleForm.pwd" auto-complete="off"></el-input>
                     </el-form-item>
 
                     <el-form-item label="确认密码" prop="checkPass">
@@ -31,7 +35,7 @@
                     </el-form-item>
 
                     <el-form-item>
-                      <el-button type="primary" class="submitBtn" @click="submitForm(ruleForm)">注册</el-button>
+                      <el-button type="primary" class="submitBtn" @click="submitForm('ruleForm')">注册</el-button>
                     </el-form-item>
                   </el-form>
                 </el-col>
@@ -65,6 +69,11 @@
 //   return uuid;
 // }
 
+import axios from "axios";
+import qs from "qs";
+import Api from "../http/api";
+axios.defaults.withCredentials = true;
+
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -81,7 +90,7 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.pass) {
+      } else if (value !== this.ruleForm.pwd) {
         callback(new Error("两次输入密码不一致!"));
       } else {
         callback();
@@ -91,8 +100,10 @@ export default {
     return {
       activeName: "second",
       ruleForm: {
+        email:"",
         name: "",
-        pass: ""
+        pwd: "",
+        type:""
       },
       rules: {
         name: [
@@ -108,55 +119,47 @@ export default {
     };
   },
 
-  mounted: function() {
-    this.getUsers();
-  },
-
-  //获取用户数据
-  getUsers() {
-    this.loading = true;
-    api._get().then(
-      res => {
-        this.users = res.datas;
-        this.total_rows = res.datas.total_rows;
-        this.loading = false;
-        console.log(res);
-      },
-      err => {
-        console.log(err);
-      }
-    );
-  },
-
   methods: {
     /**
      * 注册用户
      */
     submitForm(form) {
-      console.log(form);
-      this.$router.push("/");
-      this.$message({
-        showClose: true,
-        message: "注册成功",
-        type: "success"
+      this.$refs[form].validate(valid => {
+        if (valid) {
+          axios
+            .post(
+              Api.registerUrl,
+              qs.stringify(
+                {
+                  name: this.ruleForm.name,
+                  email: this.ruleForm.email,
+                  pwd: this.ruleForm.pwd,
+                  type: "ADMIN"
+                }
+              )
+            )
+            .then(res => {
+              console.log(res.data.code);
+              if (res.data.code == 1) {
+                //弹出消息 提示已经注册成功
+                this.$message({
+                  type: "success",
+                  message: "注册成功"
+                });
+                this.$router.push("/");
+              } else {
+                //弹出消息 提示已经注册失败
+                this.$message({
+                  type: "error",
+                  message: "已被注册，请重新注册！"
+                });
+              }
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
       });
-      api._post(form);
-      //this.$router.push("/login");
-      // this.$refs.formName.validate(valid => {
-      //   console.log(formName);
-      //   if (valid) {
-      //     this.$message({
-      //       type: "success",
-      //       message: "注册成功"
-      //     });
-      //     //register._post(formName);
-      //     this.$router.push("/login");
-      //     // this.activeName: 'first',
-      //   } else {
-      //     console.log("error submit!!");
-      //     return false;
-      //   }
-      // });
     }
   }
 };
