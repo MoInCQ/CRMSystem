@@ -33,13 +33,13 @@
             <el-row style="height:40px">
               <div
                 style="font-size:15px; font-weight: bold; text-align:left; color:#000000; margin:10px 0px 0px 3px"
-              >蔡徐坤</div>
+              >{{ userName }}</div>
             </el-row>
 
             <el-row style="height:30px">
               <div
                 style="font-size:12px; text-align:left; color:#303133; margin:0px 0px 0px 3px"
-              >超级管理员</div>
+              >{{ userType }}</div>
             </el-row>
           </el-col>
         </el-row>
@@ -82,7 +82,6 @@
             <el-menu-item index="/Home/ServiceManagement">服务管理</el-menu-item>
           </el-submenu>
 
-
           <!-- 报表统计 -->
           <el-submenu index="report_form_statistics">
             <template slot="title">
@@ -95,7 +94,6 @@
             <el-menu-item index="/Home/CustomerLoseAnalysis">客户流失分析</el-menu-item>
           </el-submenu>
 
-
           <!-- 基本数据 -->
           <el-submenu index="basic_data">
             <template slot="title">
@@ -106,15 +104,12 @@
             <el-menu-item index="/Home/SelectProductInfo">查询产品信息</el-menu-item>
             <el-menu-item index="/Home/SelectProductReserves">查询库存</el-menu-item>
           </el-submenu>
-
-
         </el-menu>
       </el-aside>
 
-
       <!-- RouterView -->
       <el-main>
-        <router-view/>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
@@ -122,30 +117,70 @@
 
 <style scoped>
 .el-aside {
-display: block;
-position: relative;
-overflow-y: scroll;
-
+  display: block;
+  position: relative;
+  overflow-y: scroll;
 }
-
 </style>
 
-
 <script>
+import axios from "axios";
+import Api from "../http/api";
+axios.defaults.withCredentials = true;
+
 export default {
   data() {
     return {
       logoUrl: require("../assets/logoPic.jpg"),
       circleUrl: require("../assets/circlePic.jpg"),
-      activeIndex: '/Home/Console',
+      activeIndex: "/Home/Console",
+
+      userName: "",
+      userType: ""
     };
+  },
+
+  mounted: function() {
+    // init page at console
+    this.$router.push("/Home/Console");
+
+    axios.get(Api.getCurrentLoginAccountInfoUrl).then(res => {
+      if (res.data.code == 1) {
+        this.userName = res.data.data.name;
+        if (res.data.data.type == "ADMIN") {
+          this.userType = "超级管理员";
+        } else {
+          this.userType = "未知";
+        }
+      } else {
+        this.$message({
+          showClose: true,
+          message: "请求个人信息失败",
+          type: "error"
+        });
+      }
+    });
   },
 
   methods: {
     // 退出登录
     logOut() {
-      console.log("logout success");
-      this.$router.push("/");
+      axios.post(Api.logoutUrl).then(res => {
+        if (res.data.code == 1) {
+          this.$message({
+            showClose: true,
+            message: "注销登录成功",
+            type: "success"
+          });
+          this.$router.push("/");
+        } else {
+          this.$message({
+            showClose: true,
+            message: "未知错误",
+            type: "error"
+          });
+        }
+      });
     }
   }
 };
